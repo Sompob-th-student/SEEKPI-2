@@ -37,6 +37,10 @@ Decisions (2026-11-05): **on-premise** hosting, **SQLite** database, **no D365**
 
 The prototype below uses its own simpler SQLite tables, but its scoring and workflow run on the same code as the scoring document. Moving the prototype onto `database/schema.sql` is the Phase 1 work described in the spec.
 
+## Cloudflare deployment
+
+[`cloudflare/`](cloudflare/) runs the same app on Cloudflare Workers + D1 + Static Assets. The Worker imports the same scoring, workflow and resource modules from `server/`. See [`cloudflare/README-DEPLOY.md`](cloudflare/README-DEPLOY.md) for the deploy steps, and note that it conflicts with the on-premise decision for real personal data.
+
 ## Stack (prototype)
 
 | | |

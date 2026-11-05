@@ -535,10 +535,10 @@ const baseCols = [C('no', 'no'), C('emp_code', 'empCode'), C('emp_name', 'empNam
 const reports = {
   appraisal: { perm: 'report_appraisal', run: (q) => ({ columns: baseCols, rows: listAssignments({ ...q, type: 'individual' }) }) },
   appraisal_by_org: { perm: 'report_appraisal_by_org', run: (q) => ({
-    columns: [C('org_name', 'organization'), C('headcount', 'headcount'), C('avg_score', 'avgScore'), C('A', 'A'), C('B', 'B'), C('C', 'C'), C('D', 'D'), C('E', 'E')],
+    columns: [C('org_name', 'organization'), C('headcount', 'headcount'), C('avg_score', 'avgScore'), C('FE', 'FE'), C('EE', 'EE'), C('FM', 'FM'), C('PM', 'PM'), C('NM', 'NM')],
     rows: gradeMatrix(q, 'o.org_name') }) },
   appraisal_by_level: { perm: 'report_appraisal_by_level', run: (q) => ({
-    columns: [C('org_name', 'levelGroup'), C('headcount', 'headcount'), C('avg_score', 'avgScore'), C('A', 'A'), C('B', 'B'), C('C', 'C'), C('D', 'D'), C('E', 'E')],
+    columns: [C('org_name', 'levelGroup'), C('headcount', 'headcount'), C('avg_score', 'avgScore'), C('FE', 'FE'), C('EE', 'EE'), C('FM', 'FM'), C('PM', 'PM'), C('NM', 'NM')],
     rows: gradeMatrix(q, 'lg.level_group_name') }) },
   appraisal_by_job_kpi: { perm: 'report_appraisal_by_job_kpi', run: (q) => ({
     columns: [C('item_code', 'itemCode'), C('item_name', 'itemName'), C('perspective_name', 'perspective'), C('assigned', 'assigned'), C('avg_target', 'target'), C('avg_actual', 'actual'), C('avg_achievement', 'achievement'), C('avg_score', 'score')],

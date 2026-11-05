@@ -1,0 +1,21 @@
+{
+  "name": "seekpi-2-cloudflare",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SEEKPI-2 on Cloudflare Workers + D1 + Static Assets",
+  "scripts": {
+    "build:web": "npm --prefix ../client install && npm --prefix ../client run build:cloudflare",
+    "build:seed": "node scripts/build-seed.mjs",
+    "db:migrate:local": "wrangler d1 migrations apply seekpi2 --local",
+    "db:migrate:remote": "wrangler d1 migrations apply seekpi2 --remote",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "hono": "^4.7.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.20.0"
+  }
+}

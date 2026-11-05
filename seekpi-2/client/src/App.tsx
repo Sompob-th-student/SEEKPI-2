@@ -83,7 +83,7 @@ function Logout() {
 
 export default function App() {
   return (
-    <BrowserRouter basename="/seekpi-2">
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || undefined}>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />

@@ -6,6 +6,8 @@ seekpi-2/server/data/
 *.db
 *.db-wal
 *.db-shm
+# release packages
+*.zip
 # logs and local tool settings
 *.log
 .claude/settings.local.json
