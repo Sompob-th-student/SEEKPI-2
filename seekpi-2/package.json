@@ -1,0 +1,15 @@
+{
+  "name": "seekpi-2",
+  "version": "2.0.0",
+  "private": true,
+  "description": "SEEKPI-2: KPI & performance appraisal web app for Syntec, rebuilt from a REA (reverse engineer anything) analysis of the original SEEKPI",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "build": "npm --prefix client run build",
+    "start": "node server/index.js",
+    "dev:api": "node --watch server/index.js",
+    "dev:web": "npm --prefix client run dev",
+    "reset-db": "node -e \"require('fs').rmSync('server/data',{recursive:true,force:true})\""
+  },
+  "engines": { "node": ">=22.13" }
+}

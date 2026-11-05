@@ -1,0 +1,331 @@
+{
+ "evidence_id": "ev_382da6451c0379923e6743de3eb2ec0fa8c1ef2ca0c1f48df667f00deacc8f3a",
+ "routes": [
+  {
+   "path": "/",
+   "classification": "page"
+  },
+  {
+   "path": "/*",
+   "classification": "page"
+  },
+  {
+   "path": "/adjust",
+   "classification": "page"
+  },
+  {
+   "path": "/appraisal",
+   "classification": "page"
+  },
+  {
+   "path": "/appraisal_item",
+   "classification": "page"
+  },
+  {
+   "path": "/assignment/",
+   "classification": "unknown"
+  },
+  {
+   "path": "/assignment/corporate",
+   "classification": "page"
+  },
+  {
+   "path": "/assignment/individual",
+   "classification": "page"
+  },
+  {
+   "path": "/assignment/items",
+   "classification": "page"
+  },
+  {
+   "path": "/dashboard/branch_performance",
+   "classification": "page"
+  },
+  {
+   "path": "/dashboard/dashboard_performance_trend",
+   "classification": "page"
+  },
+  {
+   "path": "/dashboard/overall_performance",
+   "classification": "page"
+  },
+  {
+   "path": "/dashboard/performance_comparison",
+   "classification": "page"
+  },
+  {
+   "path": "/employee",
+   "classification": "unknown"
+  },
+  {
+   "path": "/employee/",
+   "classification": "page"
+  },
+  {
+   "path": "/employee/add",
+   "classification": "unknown"
+  },
+  {
+   "path": "/feedback",
+   "classification": "page"
+  },
+  {
+   "path": "/feedback/history/",
+   "classification": "unknown"
+  },
+  {
+   "path": "/feedback/structure_list/",
+   "classification": "unknown"
+  },
+  {
+   "path": "/feedback_report",
+   "classification": "page"
+  },
+  {
+   "path": "/force_rank",
+   "classification": "page"
+  },
+  {
+   "path": "/force_rank_horizontal",
+   "classification": "page"
+  },
+  {
+   "path": "/force_rank_horizontal_board",
+   "classification": "page"
+  },
+  {
+   "path": "/force_rank_vertical",
+   "classification": "page"
+  },
+  {
+   "path": "/import_salary",
+   "classification": "page"
+  },
+  {
+   "path": "/login",
+   "classification": "system"
+  },
+  {
+   "path": "/logout",
+   "classification": "system"
+  },
+  {
+   "path": "/manage/role",
+   "classification": "page"
+  },
+  {
+   "path": "/manage/user",
+   "classification": "page"
+  },
+  {
+   "path": "/profile",
+   "classification": "page"
+  },
+  {
+   "path": "/report/appraisal",
+   "classification": "page"
+  },
+  {
+   "path": "/report/appraisalbyjobkpi",
+   "classification": "page"
+  },
+  {
+   "path": "/report/appraisalbylevel",
+   "classification": "page"
+  },
+  {
+   "path": "/report/appraisalbyorg",
+   "classification": "page"
+  },
+  {
+   "path": "/report/bonussalary",
+   "classification": "page"
+  },
+  {
+   "path": "/report/data_entry",
+   "classification": "page"
+  },
+  {
+   "path": "/report/kpi",
+   "classification": "page"
+  },
+  {
+   "path": "/report/performance_form",
+   "classification": "page"
+  },
+  {
+   "path": "/report/usage_log",
+   "classification": "page"
+  },
+  {
+   "path": "/setting/LDAP",
+   "classification": "page"
+  },
+  {
+   "path": "/setting/data_integration",
+   "classification": "page"
+  },
+  {
+   "path": "/setting/e_mail_server",
+   "classification": "page"
+  },
+  {
+   "path": "/setting/password_policy",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/company",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/competency_score",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/criteria",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/force_rank_group",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/form",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/grade_criteria",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/kpi",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/level",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/level_group",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/organization",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/perspective",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/position",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/position_group",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/structure",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/threshold_group",
+   "classification": "page"
+  },
+  {
+   "path": "/setup/uom",
+   "classification": "page"
+  }
+ ],
+ "endpoint_candidates": [
+  "/access_type",
+  "/action_plan",
+  "/all",
+  "/appraisal_status",
+  "/appraisal_type",
+  "/assessor_group",
+  "/assignment_status",
+  "/auth/position",
+  "/channel",
+  "/chart",
+  "/chart_bar",
+  "/chart_line",
+  "/company",
+  "/company/dropdown",
+  "/competency_score_group",
+  "/competency_type",
+  "/criteria",
+  "/dashboard_performace_trend/all",
+  "/dashboard_performace_trend/chart",
+  "/dashboard_performace_trend/item/dropdown",
+  "/data_kpi",
+  "/datatable",
+  "/download",
+  "/dropdown",
+  "/dropdown/employee_detail",
+  "/dropdown_force_rank_group/force_rank_group",
+  "/emp_type",
+  "/employee",
+  "/export",
+  "/feedback/emp_list",
+  "/feedback/report",
+  "/force_rank_group",
+  "/force_rank_horizon_board",
+  "/forced_org",
+  "/form",
+  "/frequency_type",
+  "/function_type",
+  "/grade_and_count_force_rank",
+  "/index_calculate_list",
+  "/level/dropdown",
+  "/level_group",
+  "/logout",
+  "/org",
+  "/parent_level/dropdown",
+  "/position",
+  "/province",
+  "/responsible",
+  "/result_type",
+  "/role/dropdown",
+  "/stage/dropdown",
+  "/structure",
+  "/structure_type/dropdown",
+  "/tags",
+  "/target_score/dropdown",
+  "/value_type",
+  "calculate/recalculate/result_header",
+  "dropdown",
+  "grade_list",
+  "org/dropdown",
+  "position_group_level",
+  "salary/export",
+  "salary/import",
+  "search",
+  "structures/items",
+  "structures/items/template",
+  "sum_up"
+ ],
+ "completeness": {
+  "status": "partial",
+  "parsed_scripts": 2,
+  "parse_failures": 0,
+  "visited_ast_nodes": 410794
+ },
+ "unknowns": [
+  {
+   "dimension": "javascript_analysis",
+   "reason": "Analysis was unavailable for captured scripts (deadline); findings from those scripts are unknown. Worker detail: \"analyze_web_bundle reached its 30000 ms per-script deadline (deadlineExpired) for analysis_timeout_ms. This is not total_analysis_timeout_ms and not the MCP client deadline.\"",
+   "affected_script_keys": [
+    "scr_f1e35e0b528058ce1f37640f508a7a835c4108c12f0b44a2eaa0a15376f02e89"
+   ]
+  },
+  {
+   "dimension": "javascript_ast",
+   "reason": "Local returned-reference projections were conservatively widened; effects include additional source-local candidates.",
+   "affected_script_keys": [
+    "scr_4121bf19d3527d2dfa34c38660247c5cf84f26de3eea3504789d4ad37cbacb4d"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,251 @@
+<title>SEEKPI-2 Scoring Policy Decisions</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: decision sheet; summary table first, then one card per policy with the recommended option marked */
+:root {
+  --bg: #f6f8fb; --paper: #ffffff; --ink: #18222f; --muted: #5b6878; --line: #dbe2ea;
+  --navy: #17324d; --blue: #1a7fc4; --gold: #9a6f00; --tint: #eaf2fa; --rec: #e8f4ec; --rec-ink: #1d6b3a; --warn: #a3501a;
+  --f-body: 'IBM Plex Sans Thai', 'Sarabun', 'Leelawadee UI', system-ui, sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1620; --paper: #151f2b; --ink: #e3e9f0; --muted: #9aa8b8; --line: #2a3747;
+  --navy: #9cc3e8; --blue: #5fb0ea; --gold: #e0b44c; --tint: #1b2a3a; --rec: #15301f; --rec-ink: #7fd39d; --warn: #f0a46c; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f1620; --paper: #151f2b; --ink: #e3e9f0; --muted: #9aa8b8; --line: #2a3747;
+  --navy: #9cc3e8; --blue: #5fb0ea; --gold: #e0b44c; --tint: #1b2a3a; --rec: #15301f; --rec-ink: #7fd39d; --warn: #f0a46c; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15.5px/1.75 var(--f-body); margin: 0 }
+.page { max-width: 980px; margin: 0 auto; display: grid; gap: 22px;
+  padding-block: 32px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+.kicker { font: 500 12px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--gold) }
+h1 { margin: 6px 0 0; font-size: clamp(26px, 4vw, 36px); line-height: 1.2; color: var(--navy); text-wrap: balance }
+h2 { margin: 0; font-size: 20px; color: var(--navy); text-wrap: balance }
+p { margin: 0; max-width: 72ch }
+.memo { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 22px 26px; display: grid; gap: 12px }
+dl.meta { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 18px; font-size: 14.5px }
+dl.meta dt { color: var(--muted) } dl.meta dd { margin: 0 }
+.scroll { overflow-x: auto; max-width: 100% }
+table { border-collapse: collapse; width: 100%; font-size: 14px }
+th, td { text-align: left; vertical-align: top; padding: 9px 10px; border-bottom: 1px solid var(--line) }
+th { font-size: 12.5px; color: var(--muted); background: var(--tint); white-space: nowrap; font-weight: 600 }
+td.no { font: 600 13px/1.6 var(--f-mono); color: var(--muted); width: 36px }
+td.blank { min-width: 120px; color: var(--muted) }
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 20px 24px; display: grid; gap: 12px; min-width: 0 }
+.card header { display: flex; gap: 12px; align-items: baseline }
+.num { font: 600 13px/1 var(--f-mono); color: var(--paper); background: var(--navy); border-radius: 4px; padding: 5px 7px; flex: none }
+.q { font-weight: 600 }
+.opts { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none }
+.opts li { border: 1px solid var(--line); border-radius: 6px; padding: 9px 12px; display: grid; grid-template-columns: 22px 1fr; gap: 8px }
+.opts li::before { content: "☐"; color: var(--muted); font-size: 16px; line-height: 1.6 }
+.opts li.rec { background: var(--rec); border-color: transparent }
+.opts li.rec::before { content: "☑"; color: var(--rec-ink) }
+.tag { font: 600 11.5px/1 var(--f-body); color: var(--rec-ink); letter-spacing: .02em; margin-left: 6px; white-space: nowrap }
+.ex { background: var(--tint); border-radius: 6px; padding: 10px 14px; font-size: 14.5px; display: grid; gap: 4px }
+.ex b { color: var(--navy) }
+.note { color: var(--warn); font-size: 14px }
+code { font: 13px/1.5 var(--f-mono); background: var(--tint); padding: 1px 5px; border-radius: 4px }
+.num-cell { font-variant-numeric: tabular-nums; white-space: nowrap }
+.reply { background: var(--paper); border: 1px dashed var(--line); border-radius: 8px; padding: 18px 22px; display: grid; gap: 8px }
+footer { color: var(--muted); font-size: 13px }
+@media (max-width: 600px) { .memo, .card { padding: 16px } dl.meta { grid-template-columns: 1fr } dl.meta dt { margin-top: 6px } }
+</style>
+
+<main class="page">
+  <div>
+    <div class="kicker">SEEKPI-2 · ขออนุมัตินโยบายการคำนวณคะแนน · ฉบับที่ 3</div>
+    <h1>ประเด็นนโยบายการคำนวณคะแนนที่ต้องให้ HR ยืนยัน</h1>
+  </div>
+
+  <section class="memo" aria-label="บันทึก">
+    <dl class="meta">
+      <dt>ถึง</dt><dd>ฝ่ายทรัพยากรบุคคล (HR Performance และ C&amp;B)</dd>
+      <dt>จาก</dt><dd>ทีมพัฒนาระบบ SEEKPI-2</dd>
+      <dt>เรื่อง</dt><dd>ยืนยันนโยบาย 11 ข้อสำหรับสูตรคะแนน เกรด และ Force Rank ของระบบ SEEKPI-2</dd>
+      <dt>ต้องการคำตอบ</dt><dd>ก่อนเริ่มพัฒนา Phase 0 (Discovery)</dd>
+    </dl>
+    <p>ฉบับนี้ใช้แทนฉบับก่อนหน้า ทีมศึกษาหน้าจอจริงของ SEE KPI เดิมแล้วพบว่า ระบบเดิมให้คะแนน KPI จาก <b>ค่าเป้าหมาย 5 ระดับในแต่ละงวด</b> ใช้เกรด <b>FE‹S› / EE‹A› / FM‹B› / PM‹C› / NM‹D›</b> และตั้ง <b>น้ำหนัก Structure แยกตาม Level Group</b> ตอนนี้ SEEKPI-2 ทำงานแบบเดียวกันแล้ว แต่บางกติการะบบเดิมคำนวณที่ Server ซึ่งตรวจสอบจากภายนอกไม่ได้ จึงต้องให้ HR ยืนยัน</p>
+    <p>ตัวอย่างตัวเลขทุกข้อคำนวณจากโค้ดจริงของระบบ ค่าที่ <b>ทำเครื่องหมาย ☑</b> คือค่าที่ระบบใช้อยู่ตอนนี้ หาก HR เห็นด้วยทั้งหมด ตอบกลับว่า "ยืนยันตามที่เสนอ" ได้เลย</p>
+  </section>
+
+  <section class="memo" aria-label="สรุป">
+    <h2>สรุป 11 ประเด็น</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>#</th><th>ประเด็น</th><th>ค่าที่ระบบใช้ตอนนี้</th><th>ผลกระทบ</th><th>HR ยืนยัน / แก้ไข</th></tr></thead>
+        <tbody>
+          <tr><td class="no">1</td><td>ผลแย่กว่าเป้าระดับ 1 ได้กี่คะแนน</td><td>0</td><td>กลาง: KPI ที่พลาดหนักบางงวด</td><td class="blank">☐ ยืนยัน ☐ แก้ไข</td></tr>
+          <tr><td class="no">2</td><td>คะแนน KPI จากหลายงวด</td><td>ค่าเฉลี่ยของทุกงวดที่มีผล</td><td>สูง: เปลี่ยนคะแนนของ KPI ทุกข้อที่เป็น Monthly / Quarterly</td><td class="blank">☐ ยืนยัน ☐ แก้ไข</td></tr>
+          <tr><td class="no">3</td><td>คะแนนระหว่างระดับ</td><td>ขั้นบันได (ได้ระดับที่ถึง)</td><td>กลาง: ความละเอียดของคะแนน</td><td class="blank">☐ ยืนยัน ☐ แก้ไข</td></tr>
+          <tr><td class="no">4</td><td>ช่วงคะแนนของเกรด FE–NM</td><td>90 / 75 / 55 / 40</td><td>สูง: กำหนดเกรดและเงินของทุกคน</td><td class="blank">☐ ยืนยัน ☐ แก้ไข</td></tr>
+          <tr><td class="no">5</td><td>น้ำหนัก Structure ของ 20 Level Group</td><td>ค่าตัวอย่าง 4 กลุ่ม</td><td>สูง: ต้องใช้ค่าจริงจากระบบเดิม</td><td class="blank">☐ ยืนยัน ☐ แก้ไข</td></tr>
+          <tr><td class="no">6</td><td>เศษเท่ากันตอนปัดจำนวนคนต่อเกรด</td><td>ให้เกรดที่ใกล้ FM ก่อน</td><td>กลาง: เปลี่ยนจำนวนคน PM / NM ได้ 1 คน</td><td class="blank">☐ ยืนยัน ☐ แก้ไข</td></tr>
+          <tr><td class="no">7</td><td>ขนาดกลุ่มขั้นต่ำของ Force Rank</td><td>5 คน</td><td>กลาง: หน่วยงานเล็กไม่ถูกบังคับ Bell curve</td><td class="blank">☐ ยืนยัน ☐ แก้ไข</td></tr>
+          <tr><td class="no">8</td><td>Force Rank ปรับเกรดขึ้นได้หรือไม่</td><td>ปรับได้ทั้งขึ้นและลง</td><td>สูง: กระทบงบขึ้นเงินเดือนและโบนัส</td><td class="blank">☐ ยืนยัน ☐ แก้ไข</td></tr>
+          <tr><td class="no">9</td><td>Value Get Zero (ถ้าเปิดใช้ Structure หักคะแนน)</td><td>คะแนนรวมเป็น 0</td><td>ต่ำ: Config ปัจจุบันไม่ใช้ Deduct</td><td class="blank">☐ ยืนยัน ☐ แก้ไข</td></tr>
+          <tr><td class="no">10</td><td>KPI ที่ถูก Waive</td><td>ไม่นับ และปรับน้ำหนักที่เหลือเป็น 100%</td><td>กลาง: พนักงานที่ KPI ถูกยกเลิกกลางปี</td><td class="blank">☐ ยืนยัน ☐ แก้ไข</td></tr>
+          <tr><td class="no">11</td><td>วิธีรวมผลของ SUM UP</td><td>ผลรวมสำหรับ KPI ที่ตั้ง Sum Up นอกนั้นเฉลี่ย</td><td>กลาง: คะแนนของหัวหน้างานและ Scorecard องค์กร</td><td class="blank">☐ ยืนยัน ☐ แก้ไข</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <article class="card">
+    <header><span class="num">1</span><h2>ผลแย่กว่าเป้าระดับ 1 ได้กี่คะแนน</h2></header>
+    <p>แต่ละงวดได้คะแนนเท่ากับระดับสูงสุด (1–5) ที่ผลจริงทำได้ ถ้าผลจริงแย่กว่าระดับ 1 ต้องตัดสินว่าจะได้ 0 หรือ 1</p>
+    <ul class="opts">
+      <li class="rec"><span>0 คะแนน <span class="tag">ค่าที่ใช้ตอนนี้</span></span></li>
+      <li><span>1 คะแนน (ต่ำสุดเท่ากับระดับ 1)</span></li>
+    </ul>
+    <div class="ex">
+      <span><b>ตัวอย่าง:</b> LTIFR (Quarterly) เป้า L1–L5 = 1.0 / 0.8 / 0.6 / 0.4 / 0.2 ผลจริง 0.5 / 0.3 / 1.2 ได้คะแนนงวด 3 / 4 / ?</span>
+      <span>ค่าที่ใช้ตอนนี้: คะแนน KPI = (3 + 4 + 0) ÷ 3 = <b>2.33</b> · ทางเลือกที่ 2: (3 + 4 + 1) ÷ 3 = <b>2.67</b></span>
+    </div>
+  </article>
+
+  <article class="card">
+    <header><span class="num">2</span><h2>คะแนน KPI จากหลายงวด</h2></header>
+    <p>KPI แบบ Monthly มี 12 งวด และแบบ Quarterly มี 4 งวด ต้องตัดสินว่าคะแนน KPI ทั้งปีมาจากอะไร</p>
+    <ul class="opts">
+      <li class="rec"><span>ค่าเฉลี่ยคะแนนของทุกงวดที่มีผล <span class="tag">ค่าที่ใช้ตอนนี้</span></span></li>
+      <li><span>ใช้คะแนนของงวดล่าสุด</span></li>
+      <li><span>รวมผลจริงทุกงวดก่อน (เฉลี่ย / รวม / ล่าสุด ตามประเภท KPI) แล้วจึงเทียบกับเป้าทั้งปี</span></li>
+    </ul>
+    <div class="ex">
+      <span><b>ตัวอย่าง:</b> SPI (Monthly) เป้า 0.85 / 0.90 / 0.95 / 1.00 / 1.05 ผลจริง Jan–Oct = 0.97, 1.01, 0.94, 0.99, 1.02, 1.06, 0.92, 0.98, 1.00, 1.03</span>
+      <span>เฉลี่ยคะแนนรายงวด: <b>3.40</b> · ใช้งวดล่าสุด (Oct = 1.03): <b>4</b> · เฉลี่ยผลจริงได้ 0.992 แล้วเทียบเป้า: <b>3</b></span>
+    </div>
+    <p class="note">ฟอร์ม KPI ของระบบเดิมมีตัวเลือก Sum Up และ Prorate ซึ่งอาจหมายถึงทางเลือกที่ 3 ควรยืนยันกับผู้ดูแลระบบเดิม</p>
+  </article>
+
+  <article class="card">
+    <header><span class="num">3</span><h2>คะแนนระหว่างระดับ</h2></header>
+    <p>ถ้าผลจริงอยู่ระหว่างสองระดับ จะให้คะแนนเป็นจำนวนเต็มของระดับที่ทำได้ หรือคิดตามสัดส่วนระหว่างระดับ</p>
+    <ul class="opts">
+      <li class="rec"><span>ขั้นบันได (ได้ระดับที่ถึง) <span class="tag">ค่าที่ใช้ตอนนี้</span></span></li>
+      <li><span>คิดตามสัดส่วนระหว่างระดับ (Interpolation)</span></li>
+    </ul>
+    <div class="ex">
+      <span><b>ตัวอย่าง:</b> SPI งวด Jan ผลจริง 0.97 อยู่ระหว่าง L3 (0.95) กับ L4 (1.00)</span>
+      <span>ขั้นบันได: <b>3</b> · Interpolation: 3 + (0.97 − 0.95) ÷ (1.00 − 0.95) = <b>3.40</b></span>
+    </div>
+  </article>
+
+  <article class="card">
+    <header><span class="num">4</span><h2>ช่วงคะแนนของเกรด FE–NM</h2></header>
+    <p>ถ้าทุก KPI ได้ตามเป้าพอดี (ระดับ 3) คะแนนรวมคือ 3 ÷ 5 × 100 = 60.00 ช่วงคะแนนของเกรดจึงต้องสอดคล้องกับจุดนี้</p>
+    <ul class="opts">
+      <li class="rec"><span>FE ≥ 90 · EE ≥ 75 · FM ≥ 55 · PM ≥ 40 · NM ต่ำกว่า 40 <span class="tag">ค่าที่ใช้ตอนนี้</span></span></li>
+      <li><span>ใช้ช่วงคะแนนจาก Grade Criteria จริงในระบบเดิม (กรุณาแนบมา)</span></li>
+    </ul>
+    <div class="ex">
+      <span><b>ตัวอย่าง:</b> พนักงานคะแนนรวม 65.11 (3.26) ได้ <b>FM‹B›</b> ตามค่าที่ใช้ตอนนี้</span>
+      <span>ถ้าระบบเดิมเริ่ม FM ที่ 65 คนนี้ยังได้ FM แต่คนที่ได้ตามเป้าพอดี (60.00) จะตกไปเป็น PM</span>
+    </div>
+    <p class="note">ข้อนี้กระทบเกรดและเงินของพนักงานทุกคน ควรได้ค่าจริงก่อนเริ่มพัฒนา</p>
+  </article>
+
+  <article class="card">
+    <header><span class="num">5</span><h2>น้ำหนัก Structure ของแต่ละ Level Group</h2></header>
+    <p>ระบบเดิมตั้งน้ำหนัก Company / Project / Individual Performance / Competency แยกตาม Level Group (พบ 20 กลุ่ม เช่น Site OP1, HQ Mgr., Director Group) ตอนนี้ SEEKPI-2 ใช้ค่าตัวอย่างเพียง 4 กลุ่ม</p>
+    <ul class="opts">
+      <li class="rec"><span>ค่าตัวอย่าง: Management 20 / 50 / 0 / 30, Engineer 0 / 40 / 40 / 20, Supervisor 0 / 50 / 50 / 0 <span class="tag">ค่าที่ใช้ตอนนี้</span></span></li>
+      <li><span>นำเข้าตาราง Appraisal Criteria จริงทั้ง 20 Level Group จากระบบเดิม</span></li>
+    </ul>
+    <div class="ex">
+      <span><b>ตัวอย่างจากระบบเดิม:</b> ระดับบริษัท 100 / 0 / 0 / 0, ระดับฝ่ายงาน 0 / 100 / 0 / 0 และพนักงานหน้างานคนหนึ่งได้ Project 50% / Individual 50%</span>
+    </div>
+  </article>
+
+  <article class="card">
+    <header><span class="num">6</span><h2>เศษเท่ากันตอนปัดจำนวนคนต่อเกรด (Force Rank)</h2></header>
+    <p>จำนวนคนต่อเกรดคิดจากสัดส่วน FE 10% · EE 20% · FM 50% · PM 15% · NM 5% ด้วยวิธี Largest Remainder ถ้าเศษของสองเกรดเท่ากัน ต้องตัดสินว่าจะให้ที่นั่งกับเกรดไหน</p>
+    <ul class="opts">
+      <li class="rec"><span>ให้เกรดที่ใกล้ FM ก่อน (ถ้าห่างจาก FM เท่ากันให้เกรดที่ต่ำกว่า) <span class="tag">ค่าที่ใช้ตอนนี้</span></span></li>
+      <li><span>ให้เกรดที่ต่ำกว่าก่อนเสมอ</span></li>
+      <li><span>ให้เกรดที่สูงกว่าก่อนเสมอ</span></li>
+    </ul>
+    <div class="ex">
+      <span><b>ตัวอย่าง: หน่วยงาน 10 คน</b> โควตา PM 1.5 และ NM 0.5 (เศษเท่ากัน) เหลือ 1 ที่นั่ง</span>
+      <span>ค่าที่ใช้ตอนนี้: <b>PM 2 · NM 0</b> · ทางเลือก "เกรดต่ำกว่าก่อน": <b>PM 1 · NM 1</b></span>
+    </div>
+  </article>
+
+  <article class="card">
+    <header><span class="num">7</span><h2>ขนาดกลุ่มขั้นต่ำของ Force Rank</h2></header>
+    <p>ถ้าบังคับสัดส่วนเกรดกับกลุ่มเล็ก ผลจะบิดเบือน</p>
+    <ul class="opts">
+      <li class="rec"><span>กลุ่มที่มีน้อยกว่า 5 คนไม่บังคับ ใช้เกรดจากคะแนน <span class="tag">ค่าที่ใช้ตอนนี้</span></span></li>
+      <li><span>เพิ่มขั้นต่ำเป็น 10 คน</span></li>
+      <li><span>รวมกลุ่มเล็กเข้ากับหน่วยงานแม่ก่อน</span></li>
+    </ul>
+    <div class="ex">
+      <span><b>ตัวอย่าง:</b> ทีม 4 คน คะแนน 88.4 / 84.0 / 79.2 / 75.6 ได้ EE ทั้ง 4 คนตามคะแนน</span>
+      <span>Vertical Force Rank ของระบบเดิมจัดกลุ่มตาม Force Rank Group ของหน่วยงาน ข้อนี้จึงตัดสินว่าหน่วยงานเล็กจะถูก Calibrate หรือไม่</span>
+    </div>
+  </article>
+
+  <article class="card">
+    <header><span class="num">8</span><h2>Force Rank ปรับเกรดขึ้นได้หรือไม่</h2></header>
+    <p>Force Rank จัดเกรดตามอันดับในกลุ่ม คนที่อันดับต้นจึงอาจได้เกรดสูงกว่าเกรดจากคะแนน</p>
+    <ul class="opts">
+      <li class="rec"><span>ปรับได้ทั้งขึ้นและลง <span class="tag">ค่าที่ใช้ตอนนี้</span></span></li>
+      <li><span>ปรับลงได้อย่างเดียว (ไม่ให้สูงกว่าเกรดจากคะแนน)</span></li>
+    </ul>
+    <div class="ex">
+      <span><b>ตัวอย่าง: หน่วยงาน 7 คน</b> E101 ได้คะแนน 88.40 (เกรดจากคะแนน EE) และเป็นอันดับ 1 จึงได้ที่นั่ง FE</span>
+      <span>ค่าที่ใช้ตอนนี้: <b>FE</b> (ขึ้นเงินเดือน 8%, โบนัส 3 เดือน) · ทางเลือกที่ 2: <b>EE</b> (6%, 2 เดือน)</span>
+    </div>
+    <p class="note">ตัวเลข % ขึ้นเงินเดือนและโบนัสเป็นค่าตัวอย่าง ขอให้ C&amp;B แนบตาราง Grade Criteria จริง</p>
+  </article>
+
+  <article class="card">
+    <header><span class="num">9</span><h2>Value Get Zero (ถ้าเปิดใช้ Structure หักคะแนน)</h2></header>
+    <p>Config ปัจจุบันของระบบเดิมไม่ได้ใช้ Structure หักคะแนน แต่ระบบรองรับไว้ หากจะใช้ในอนาคตต้องตัดสินความหมายของ Value Get Zero</p>
+    <ul class="opts">
+      <li class="rec"><span>คะแนนรวมทั้งหมดเป็น 0 <span class="tag">ค่าที่ใช้ตอนนี้</span></span></li>
+      <li><span>เฉพาะ Structure ที่หักคะแนนเป็น 0</span></li>
+    </ul>
+    <div class="ex">
+      <span><b>ตัวอย่าง:</b> คะแนนรวม 65.11 แต่ขาดงาน 3 วัน (Value Get Zero = 3) คะแนนรวมจะเป็น <b>0</b> ตามค่าที่ใช้ตอนนี้</span>
+    </div>
+  </article>
+
+  <article class="card">
+    <header><span class="num">10</span><h2>KPI ที่ถูก Waive (ยกเว้น)</h2></header>
+    <p>ระบบเดิมมีสวิตช์ Waive ต่อ KPI ในหน้าประเมิน ใช้เมื่อ KPI วัดไม่ได้ เช่น โครงการถูกยกเลิก ผู้ประเมินต้องระบุเหตุผลทุกครั้ง</p>
+    <ul class="opts">
+      <li class="rec"><span>ไม่นับ KPI นั้น และปรับน้ำหนักของ KPI ที่เหลือรวมเป็น 100% <span class="tag">ค่าที่ใช้ตอนนี้</span></span></li>
+      <li><span>นับเป็น 0 คะแนน</span></li>
+      <li><span>ให้คะแนนกลาง (ระดับ 3) แทน</span></li>
+    </ul>
+    <div class="ex">
+      <span><b>ตัวอย่าง:</b> Individual Performance มี 3 KPI ได้ Weight Score 18.00 (30%), 24.00 (40%) และ 21.00 (30%) แล้ว Waive ข้อสุดท้าย</span>
+      <span>ค่าที่ใช้ตอนนี้: (18 + 24) × 100 ÷ 70 = <b>60.00</b> · นับเป็น 0: <b>42.00</b> · ให้คะแนนกลาง: 18 + 24 + 18 = <b>60.00</b></span>
+    </div>
+  </article>
+
+  <article class="card">
+    <header><span class="num">11</span><h2>วิธีรวมผลของ SUM UP</h2></header>
+    <p>ปุ่ม SUM UP ดึงผลจริงของ KPI เดียวกันจากลูกทีมมาเป็นผลของหัวหน้า (หรือของ Scorecard องค์กร) ทีละงวด</p>
+    <ul class="opts">
+      <li class="rec"><span>ผลรวมสำหรับ KPI ที่ตั้ง Sum Up (จำนวนครั้ง / ยอดเงิน) นอกนั้นใช้ค่าเฉลี่ย <span class="tag">ค่าที่ใช้ตอนนี้</span></span></li>
+      <li><span>ถ่วงน้ำหนักตามขนาดงานของลูกทีม (เช่น มูลค่าโครงการ)</span></li>
+    </ul>
+    <div class="ex">
+      <span><b>ตัวอย่าง:</b> SPI งวด Jan ของลูกทีม 3 คน = 0.97, 1.03, 0.94 ได้ค่าเฉลี่ย <b>0.98</b></span>
+      <span>จำนวนรายการปรับปรุง Audit (ตั้ง Sum Up) = 2, 1, 0 ได้ผลรวม <b>3</b></span>
+    </div>
+  </article>
+
+  <section class="reply" aria-label="วิธีตอบกลับ">
+    <h2>วิธีตอบกลับ</h2>
+    <p>ตอบกลับทางอีเมลโดยระบุเลขข้อและทางเลือก เช่น "ข้อ 2 เลือกทางเลือกที่ 3, ข้อ 4 ใช้ช่วงจากระบบเดิม" ข้อที่ไม่ระบุจะถือว่ายืนยันตามค่าที่ใช้ตอนนี้</p>
+    <p>ขอให้แนบข้อมูลจริงจากระบบเดิมมาด้วย ได้แก่ ตาราง Appraisal Criteria (น้ำหนักตาม Level Group), Grade Criteria (ช่วงคะแนน, % ขึ้นเงินเดือน, เดือนโบนัส, Percent Budget) และ Force Rank Group เพื่อให้ทีมเทียบผลกับระบบเดิม 1 รอบก่อนใช้งานจริง</p>
+  </section>
+
+  <footer>อ้างอิง: SEEKPI-2 Scoring Method v2.1 และ Software Specification v1.3 · ตัวอย่างทุกข้อคำนวณด้วย <code>server/scoring-core.js</code> และตรวจด้วย Unit test</footer>
+</main>

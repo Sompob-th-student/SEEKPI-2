@@ -1,0 +1,1166 @@
+[
+ {
+  "hint": [],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "company_code",
+    "label": "companyCode"
+   },
+   {
+    "field": "company_name",
+    "label": "companyName"
+   },
+   {
+    "field": "business_line",
+    "label": "lineBusiness"
+   },
+   {
+    "field": "is_active",
+    "label": "active"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/dropdown",
+   "/dropdown",
+   "/dropdown"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "user_name",
+    "label": "userName"
+   },
+   {
+    "field": "first_name",
+    "label": "firstName"
+   },
+   {
+    "field": "last_name",
+    "label": "lastName"
+   },
+   {
+    "field": "is_active",
+    "label": "active"
+   }
+  ]
+ },
+ {
+  "hint": [],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "role_name",
+    "label": "roleName"
+   },
+   {
+    "field": "company_name",
+    "label": "company"
+   },
+   {
+    "field": "is_active",
+    "label": "active"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/access_type",
+   "/dropdown",
+   "/dropdown"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "form_name",
+    "label": "formName"
+   },
+   {
+    "field": "company_name",
+    "label": "company"
+   },
+   {
+    "field": "appraisal_year",
+    "label": "appraisalYear"
+   },
+   {
+    "field": "start_date",
+    "label": "startDate"
+   },
+   {
+    "field": "end_date",
+    "label": "endDate"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "",
+   "/",
+   "/"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "position_group_code",
+    "label": "positionGroupCode"
+   },
+   {
+    "field": "position_group_name",
+    "label": "positionGroupName"
+   },
+   {
+    "field": "company_name",
+    "label": "company"
+   },
+   {
+    "field": "is_active",
+    "label": "active"
+   }
+  ]
+ },
+ {
+  "hint": [],
+  "cols": [
+   {
+    "field": "seq_no",
+    "label": "seqNo"
+   },
+   {
+    "field": "structure_name",
+    "label": "structureName"
+   },
+   {
+    "field": "company_name",
+    "label": "company"
+   },
+   {
+    "field": "target_score",
+    "label": "targetScore"
+   },
+   {
+    "field": "value_list_name",
+    "label": "structureType"
+   },
+   {
+    "field": "is_active",
+    "label": "active"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/dropdown",
+   "/dropdown",
+   "/structure_type/dropdown"
+  ],
+  "cols": [
+   {
+    "field": "structure_id",
+    "label": "structureName"
+   },
+   {
+    "field": "score",
+    "label": "score"
+   },
+   {
+    "field": "score_name",
+    "label": "competencyScore"
+   }
+  ]
+ },
+ {
+  "hint": [],
+  "cols": [
+   {
+    "field": "seq_no",
+    "label": "seqNo"
+   },
+   {
+    "field": "level_name",
+    "label": "appraisalLevel"
+   },
+   {
+    "field": "appraisal_type_name",
+    "label": "appraisalType"
+   },
+   {
+    "field": "parent_name",
+    "label": "parentName"
+   },
+   {
+    "field": "company_name",
+    "label": "companyName"
+   },
+   {
+    "field": "is_active",
+    "label": "active"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/company/dropdown",
+   "/dropdown",
+   "/parent_level/dropdown"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "kpi_type_name",
+    "label": "kpiTypeName"
+   },
+   {
+    "field": "company_name",
+    "label": "companyName"
+   },
+   {
+    "field": "is_active",
+    "label": "active"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "",
+   "/",
+   "/"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "uom_name",
+    "label": "uom"
+   },
+   {
+    "field": "company_name",
+    "label": "company"
+   },
+   {
+    "field": "is_date",
+    "label": "isDate"
+   },
+   {
+    "field": "is_active",
+    "label": "active"
+   }
+  ]
+ },
+ {
+  "hint": [],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "password_policy_name",
+    "label": "namePasswordPolicy"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/",
+   "/",
+   "/dropdown"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "email_server_name",
+    "label": "mailDriver"
+   },
+   {
+    "field": "mail_host",
+    "label": "mailHost"
+   },
+   {
+    "field": "mail_port",
+    "label": "mailPort"
+   },
+   {
+    "field": "mail_username",
+    "label": "mailUsername"
+   },
+   {
+    "field": "is_active",
+    "label": "active"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/",
+   "/",
+   "/dropdown"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "position_code",
+    "label": "code"
+   },
+   {
+    "field": "position_name",
+    "label": "positionName"
+   },
+   {
+    "field": "company_name",
+    "label": "company"
+   },
+   {
+    "field": "effective_date",
+    "label": "effectiveDate"
+   }
+  ]
+ },
+ {
+  "hint": [],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "perspective_name",
+    "label": "perspectiveName"
+   },
+   {
+    "field": "perspective_abbr",
+    "label": "abbreviation"
+   },
+   {
+    "field": "company.company_name",
+    "label": "companyName"
+   },
+   {
+    "field": "color_code",
+    "label": "color"
+   },
+   {
+    "field": "is_active",
+    "label": "active"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/",
+   "/",
+   "/dropdown"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "org_code",
+    "label": "code"
+   },
+   {
+    "field": "org_name",
+    "label": "organizationName"
+   },
+   {
+    "field": "company_name",
+    "label": "company"
+   },
+   {
+    "field": "level_name",
+    "label": "level"
+   },
+   {
+    "field": "effective_date",
+    "label": "effectiveDate"
+   }
+  ]
+ },
+ {
+  "hint": [],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "criteria_name",
+    "label": "criteriaName"
+   },
+   {
+    "field": "company_name",
+    "label": "company"
+   },
+   {
+    "field": "effective_date",
+    "label": "effectiveDate"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/",
+   "/",
+   "/dropdown"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "item_code",
+    "label": "itemCode"
+   },
+   {
+    "field": "item_name",
+    "label": "appraisalItemName"
+   },
+   {
+    "field": "competency_name",
+    "label": "competencyName"
+   },
+   {
+    "field": "effective_date",
+    "label": "effectiveDate"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/",
+   "/",
+   "/dropdown"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "perspective_name",
+    "label": "perspective"
+   },
+   {
+    "field": "item_code",
+    "label": "itemCode"
+   },
+   {
+    "field": "item_name",
+    "label": "appraisalItemName"
+   },
+   {
+    "field": "effective_date",
+    "label": "effectiveDate"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/",
+   "/",
+   "/dropdown"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "item_name",
+    "label": "deductName"
+   },
+   {
+    "field": "max_value",
+    "label": "maxValue"
+   },
+   {
+    "field": "unit_deduct_score",
+    "label": "deductScoreUnit"
+   },
+   {
+    "field": "value_get_zero",
+    "label": "valueGetZero"
+   },
+   {
+    "field": "effective_date",
+    "label": "effectiveDate"
+   }
+  ]
+ },
+ {
+  "hint": [],
+  "cols": [
+   {
+    "field": "item_code",
+    "label": "kpiCode"
+   },
+   {
+    "field": "item_name",
+    "label": "kpiName"
+   },
+   {
+    "field": "frequency_type_id",
+    "label": "frequency"
+   },
+   {
+    "field": "uom_name",
+    "label": "uom"
+   },
+   {
+    "field": "weight_percent",
+    "label": "weightPercent"
+   },
+   {
+    "field": "is_deploy",
+    "label": "deployable"
+   },
+   {
+    "field": "is_adopt",
+    "label": "adoptable"
+   },
+   {
+    "field": "item_code",
+    "label": "kpiCode"
+   },
+   {
+    "field": "item_name",
+    "label": "kpiName"
+   },
+   {
+    "field": "target_value",
+    "label": "expectation"
+   },
+   {
+    "field": "weight_percent",
+    "label": "weightPercent"
+   },
+   {
+    "field": "item_name",
+    "label": "kpiName"
+   },
+   {
+    "field": "max_value",
+    "label": "maxValue"
+   },
+   {
+    "field": "unit_deduct_score",
+    "label": "deductScoreUnit"
+   },
+   {
+    "field": "value_get_zero",
+    "label": "valueGetZero"
+   },
+   {
+    "field": "item_code",
+    "label": "kpiCode"
+   },
+   {
+    "field": "item_name",
+    "label": "kpiName"
+   },
+   {
+    "field": "target_value",
+    "label": "expectation"
+   },
+   {
+    "field": "weight_percent",
+    "label": "weightPercent"
+   }
+  ]
+ },
+ {
+  "hint": [],
+  "cols": [
+   {
+    "field": "structure_name",
+    "label": "structure"
+   },
+   {
+    "field": "item_name",
+    "label": "appraisalItem"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/employee",
+   "/appraisal_status",
+   "/approve"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "emp_code",
+    "label": "empCode"
+   },
+   {
+    "field": "emp_name",
+    "label": "employeeName"
+   },
+   {
+    "field": "org_name",
+    "label": "organizationName"
+   },
+   {
+    "field": "level_name",
+    "label": "level"
+   },
+   {
+    "field": "level_group",
+    "label": "levelGroup"
+   },
+   {
+    "field": "position_name",
+    "label": "position"
+   },
+   {
+    "field": "individual_kpi",
+    "label": "individualKPI"
+   },
+   {
+    "field": "competency",
+    "label": "competencyName"
+   },
+   {
+    "field": "attendance",
+    "label": "attendance"
+   },
+   {
+    "field": "force_rank_index",
+    "label": "forceRankIndex"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/force_rank"
+  ],
+  "cols": [
+   {
+    "field": "emp_name",
+    "label": "employeeName"
+   },
+   {
+    "field": "org_name",
+    "label": "organizationName"
+   },
+   {
+    "field": "level_name",
+    "label": "level"
+   },
+   {
+    "field": "level_group",
+    "label": "levelGroup"
+   },
+   {
+    "field": "position_name",
+    "label": "position"
+   },
+   {
+    "field": "force_rank_index",
+    "label": "forceRankIndex"
+   },
+   {
+    "field": "no",
+    "label": "no"
+   },
+   {
+    "field": "grade",
+    "label": "grade"
+   },
+   {
+    "field": "adjust_grade",
+    "label": "adjust"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "",
+   "/action2/",
+   "sum_up"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "level_group_name",
+    "label": "levelGroupName"
+   },
+   {
+    "field": "company_name",
+    "label": "company"
+   },
+   {
+    "field": "is_active",
+    "label": "active"
+   },
+   {
+    "field": "is_vfr",
+    "label": "is_vfr"
+   }
+  ]
+ },
+ {
+  "hint": [],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "threshold_group_name",
+    "label": "thresholdGroup"
+   },
+   {
+    "field": "company_name",
+    "label": "company"
+   },
+   {
+    "field": "effective_date",
+    "label": "effectiveDate"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/report_bonus_salary"
+  ],
+  "cols": [
+   {
+    "field": "usage_datetime",
+    "label": "usageDateTime"
+   },
+   {
+    "field": "user_name",
+    "label": "userName"
+   },
+   {
+    "field": "full_name",
+    "label": "fullName"
+   },
+   {
+    "field": "emp_code",
+    "label": "empCode"
+   },
+   {
+    "field": "page_name",
+    "label": "pageName"
+   },
+   {
+    "field": "action",
+    "label": "action"
+   },
+   {
+    "field": "action_id",
+    "label": "dataId"
+   }
+  ]
+ },
+ {
+  "hint": [],
+  "cols": [
+   {
+    "field": "grade_criteria_name",
+    "label": "gradeCriteriaName"
+   },
+   {
+    "field": "company",
+    "label": "company"
+   },
+   {
+    "field": "effective_date",
+    "label": "effectiveDate"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/vertical"
+  ],
+  "cols": [
+   {
+    "field": "no",
+    "label": "no"
+   },
+   {
+    "field": "emp_code",
+    "label": "empCode"
+   },
+   {
+    "field": "emp_name",
+    "label": "employeeName"
+   },
+   {
+    "field": "level_name",
+    "label": "level"
+   },
+   {
+    "field": "position_name",
+    "label": "position"
+   },
+   {
+    "field": "org_name",
+    "label": "organizationName"
+   },
+   {
+    "field": "status",
+    "label": "status"
+   },
+   {
+    "field": "result_score",
+    "label": "score"
+   },
+   {
+    "field": "grade",
+    "label": "grade"
+   },
+   {
+    "field": "adjust_grade",
+    "label": "adjust"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/grade_and_count_force_rank",
+   "/calculate",
+   "/force_rank_group"
+  ],
+  "cols": [
+   {
+    "field": "no",
+    "label": "no"
+   },
+   {
+    "field": "emp_code",
+    "label": "empCode"
+   },
+   {
+    "field": "emp_name",
+    "label": "employeeName"
+   },
+   {
+    "field": "level_name",
+    "label": "level"
+   },
+   {
+    "field": "position_name",
+    "label": "position"
+   },
+   {
+    "field": "org_name",
+    "label": "organization"
+   },
+   {
+    "field": "status",
+    "label": "status"
+   },
+   {
+    "field": "result_score",
+    "label": "score"
+   },
+   {
+    "field": "grade",
+    "label": "grade"
+   },
+   {
+    "field": "adjust_grade",
+    "label": "adjust"
+   },
+   {
+    "field": "no",
+    "label": "no"
+   },
+   {
+    "field": "emp_code",
+    "label": "empCode"
+   },
+   {
+    "field": "emp_name",
+    "label": "employeeName"
+   },
+   {
+    "field": "level_name",
+    "label": "level"
+   },
+   {
+    "field": "position_name",
+    "label": "position"
+   },
+   {
+    "field": "org_name",
+    "label": "organization"
+   },
+   {
+    "field": "status",
+    "label": "status"
+   },
+   {
+    "field": "result_score",
+    "label": "score"
+   },
+   {
+    "field": "grade",
+    "label": "grade"
+   },
+   {
+    "field": "adjust_grade",
+    "label": "adjust"
+   }
+  ]
+ },
+ {
+  "hint": [],
+  "cols": [
+   {
+    "field": "no",
+    "label": "no"
+   },
+   {
+    "field": "emp_code",
+    "label": "empCode"
+   },
+   {
+    "field": "emp_name",
+    "label": "employeeName"
+   },
+   {
+    "field": "level_name",
+    "label": "level"
+   },
+   {
+    "field": "position_name",
+    "label": "position"
+   },
+   {
+    "field": "org_name",
+    "label": "organization"
+   },
+   {
+    "field": "status",
+    "label": "status"
+   },
+   {
+    "field": "result_score",
+    "label": "score"
+   },
+   {
+    "field": "grade",
+    "label": "grade"
+   },
+   {
+    "field": "adjust_grade",
+    "label": "adjust"
+   },
+   {
+    "field": "raise_amount",
+    "label": "raiseAmount"
+   },
+   {
+    "field": "extra_raise_amount",
+    "label": "extraRaiseAmount"
+   },
+   {
+    "field": "extra_raise",
+    "label": "extraRaise"
+   },
+   {
+    "field": "salary",
+    "label": "salary"
+   },
+   {
+    "field": "new_salary",
+    "label": "newSalary"
+   },
+   {
+    "field": "bonus_month",
+    "label": "bonusMonth"
+   },
+   {
+    "field": "bonus",
+    "label": "bonus"
+   },
+   {
+    "field": "extra_bonus_month",
+    "label": "extraBonusMonth"
+   },
+   {
+    "field": "extra_bonus",
+    "label": "extraBonus"
+   },
+   {
+    "field": "final_bonus",
+    "label": "finalBonus"
+   },
+   {
+    "field": "no",
+    "label": "no"
+   },
+   {
+    "field": "emp_code",
+    "label": "empCode"
+   },
+   {
+    "field": "emp_name",
+    "label": "employeeName"
+   },
+   {
+    "field": "level_name",
+    "label": "level"
+   },
+   {
+    "field": "position_name",
+    "label": "position"
+   },
+   {
+    "field": "org_name",
+    "label": "organization"
+   },
+   {
+    "field": "status",
+    "label": "status"
+   },
+   {
+    "field": "result_score",
+    "label": "score"
+   },
+   {
+    "field": "grade",
+    "label": "grade"
+   },
+   {
+    "field": "adjust_grade",
+    "label": "adjust"
+   },
+   {
+    "field": "raise_amount",
+    "label": "raiseAmount"
+   },
+   {
+    "field": "extra_raise_amount",
+    "label": "extraRaiseAmount"
+   },
+   {
+    "field": "extra_raise",
+    "label": "extraRaise"
+   },
+   {
+    "field": "salary",
+    "label": "salary"
+   },
+   {
+    "field": "new_salary",
+    "label": "newSalary"
+   },
+   {
+    "field": "bonus_month",
+    "label": "bonusMonth"
+   },
+   {
+    "field": "bonus",
+    "label": "bonus"
+   },
+   {
+    "field": "extra_bonus_month",
+    "label": "extraBonusMonth"
+   },
+   {
+    "field": "extra_bonus",
+    "label": "extraBonus"
+   },
+   {
+    "field": "final_bonus",
+    "label": "finalBonus"
+   }
+  ]
+ },
+ {
+  "hint": [],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "fr_group_name",
+    "label": "forceRankGroupName"
+   },
+   {
+    "field": "company_name",
+    "label": "company"
+   },
+   {
+    "field": "effective_date",
+    "label": "effectiveDate"
+   }
+  ]
+ },
+ {
+  "hint": [
+   "/feedback/report"
+  ],
+  "cols": [
+   {
+    "field": "index",
+    "label": "#"
+   },
+   {
+    "field": "emp_code",
+    "label": "empCode"
+   },
+   {
+    "field": "emp_name",
+    "label": "employeeName"
+   },
+   {
+    "field": "level_name",
+    "label": "level"
+   },
+   {
+    "field": "position_name",
+    "label": "position"
+   },
+   {
+    "field": "item_name",
+    "label": "appraisalItem"
+   }
+  ]
+ }
+]

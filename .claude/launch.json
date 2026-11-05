@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "seekpi-2",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["seekpi-2/server/index.js"],
+      "port": 4000,
+      "url": "http://127.0.0.1:4000"
+    }
+  ]
+}

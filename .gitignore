@@ -1,0 +1,11 @@
+# dependencies and build output
+node_modules/
+seekpi-2/client/dist/
+# local demo database (re-created and seeded on start)
+seekpi-2/server/data/
+*.db
+*.db-wal
+*.db-shm
+# logs and local tool settings
+*.log
+.claude/settings.local.json

@@ -1,0 +1,162 @@
+<title>SEEKPI-2 Scoring Method</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: engineering spec sheet with a title block band and a sticky outline rail */
+:root {
+  --bg: #f6f8fb; --paper: #ffffff; --ink: #18222f; --muted: #5b6878; --line: #dbe2ea;
+  --navy: #17324d; --blue: #1a7fc4; --gold: #b8860b; --tint: #eaf2fa; --code: #f1f4f8;
+  --f-body: 'IBM Plex Sans Thai', 'Sarabun', 'Leelawadee UI', system-ui, sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1620; --paper: #151f2b; --ink: #e3e9f0; --muted: #9aa8b8; --line: #2a3747;
+  --navy: #9cc3e8; --blue: #5fb0ea; --gold: #e0b44c; --tint: #1b2a3a; --code: #1b2531; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f1620; --paper: #151f2b; --ink: #e3e9f0; --muted: #9aa8b8; --line: #2a3747;
+  --navy: #9cc3e8; --blue: #5fb0ea; --gold: #e0b44c; --tint: #1b2a3a; --code: #1b2531; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15.5px/1.75 var(--f-body); margin: 0 }
+a { color: var(--blue) }
+a:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 3px }
+.band { background: var(--paper); border-bottom: 1px solid var(--line);
+  padding-block: 32px 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+.band-in { max-width: 1240px; margin: 0 auto; display: grid; gap: 18px }
+.kicker { font: 500 12px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--gold) }
+h1 { margin: 0; font-size: clamp(28px, 4.2vw, 42px); line-height: 1.15; color: var(--navy); text-wrap: balance; font-weight: 700 }
+dl.meta { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); border: 1px solid var(--line); border-radius: 6px; overflow: hidden }
+dl.meta > div { padding: 10px 14px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-width: 0 }
+dl.meta dt { font: 500 11px/1.4 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+dl.meta dd { margin: 2px 0 0; font-size: 14px; overflow-wrap: anywhere }
+.wrap { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 40px;
+  padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); align-self: start; max-height: calc(100vh - 32px); overflow: auto;
+  display: grid; gap: 2px; font-size: 13.5px; padding-right: 8px }
+nav.toc .lbl { font: 500 11px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px }
+nav.toc a { text-decoration: none; color: var(--muted); padding: 3px 8px; border-left: 2px solid transparent; line-height: 1.45 }
+nav.toc a:hover { color: var(--ink); border-left-color: var(--line) }
+nav.toc a.d2 { color: var(--ink); font-weight: 600; margin-top: 8px }
+nav.toc a.d3 { padding-left: 18px }
+main { min-width: 0; display: grid; gap: 22px }
+.sec { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 8px 28px 24px; min-width: 0 }
+.sec > :first-child { margin-top: 18px }
+h2 { font-size: 23px; color: var(--navy); margin: 22px 0 10px; text-wrap: balance; scroll-margin-top: 16px; font-weight: 700 }
+h3 { font-size: 17px; color: var(--ink); margin: 26px 0 8px; scroll-margin-top: 16px; font-weight: 600 }
+p, li { max-width: 72ch }
+ul, ol { padding-left: 1.3em }
+code { font: 13px/1.5 var(--f-mono); background: var(--code); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere }
+.scroll { overflow-x: auto; max-width: 100% }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line) }
+th { font: 600 12px/1.4 var(--f-body); letter-spacing: .03em; color: var(--muted); background: var(--tint); white-space: nowrap }
+td:first-child { font-weight: 500 }
+.table-wrap { border: 1px solid var(--line); border-radius: 6px; margin: 12px 0 }
+.table-wrap tr:last-child td { border-bottom: 0 }
+figure.diagram { margin: 14px 0; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); padding: 12px }
+pre.mermaid { margin: 0; min-width: 640px; background: transparent; text-align: center }
+pre.code { background: var(--code); padding: 14px; border-radius: 6px; font: 13px/1.6 var(--f-mono) }
+@media (max-width: 900px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 20px }
+  nav.toc { position: static; max-height: none; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 14px }
+  nav.toc a.d3 { display: none }
+  .sec { padding: 4px 16px 18px }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth } }
+</style>
+<header class="band"><div class="band-in">
+  <div class="kicker">Syntec Construction · HR Performance · Calculation Rules</div>
+  <h1>SEEKPI-2 Scoring Method</h1>
+  <dl class="meta"><div><dt>เรื่อง</dt><dd>วิธีคำนวณคะแนน KPI แบบเป้าหมาย 5 ระดับ, Competency, Deduct score, คะแนนรวม, เกรด และ Force Rank</dd></div><div><dt>ผู้ใช้เอกสาร</dt><dd>HR Performance, C&amp;B, Calibration Committee, ทีมพัฒนาระบบ</dd></div><div><dt>เวอร์ชัน</dt><dd>2.1 (5 พฤศจิกายน 2569) เพิ่ม Waive, SUM UP และ ACTION TO ตามระบบเดิม</dd></div><div><dt>โค้ดที่ใช้คำนวณ</dt><dd><code>server/scoring-core.js</code> (ตัวอย่างทุกข้อตรวจด้วย <code>server/test/scoring.test.js</code>) และ Workflow ที่ <code>server/workflow.js</code></dd></div><div><dt>สถานะ</dt><dd>รอ HR ยืนยันนโยบายในหัวข้อ 11</dd></div></dl>
+</div></header>
+<div class="wrap">
+  <nav class="toc" aria-label="สารบัญ"><div class="lbl">สารบัญ</div><a class="d2" href="#s-1-ภาพรวม">1. ภาพรวม</a><a class="d2" href="#s-2-ค่าตั้งต้นที่ใช้ในตัวอย่าง">2. ค่าตั้งต้นที่ใช้ในตัวอย่าง</a><a class="d2" href="#s-3-ขั้นที่-1-คะแนนรายงวดจากเป้าหมาย-5-ระดับ">3. ขั้นที่ 1: คะแนนรายงวดจากเป้าหมาย 5 ระดับ</a><a class="d2" href="#s-4-ขั้นที่-2-คะแนน-kpi">4. ขั้นที่ 2: คะแนน KPI</a><a class="d2" href="#s-5-ขั้นที่-3-4-weight-score-และคะแนน-structure">5. ขั้นที่ 3–4: Weight Score และคะแนน Structure</a><a class="d2" href="#s-6-ขั้นที่-5-คะแนนรวม">6. ขั้นที่ 5: คะแนนรวม</a><a class="d2" href="#s-6a-waive-ยกเว้น-kpi">6A. Waive (ยกเว้น KPI)</a><a class="d2" href="#s-6b-sum-up-รวมผลจากผู้ใต้บังคับบัญชา">6B. SUM UP (รวมผลจากผู้ใต้บังคับบัญชา)</a><a class="d2" href="#s-7-deduct-score-กรณีเปิดใช้-structure-ประเภทหักคะแนน">7. Deduct score (กรณีเปิดใช้ Structure ประเภทหักคะแนน)</a><a class="d2" href="#s-8-ขั้นที่-6-เกรด">8. ขั้นที่ 6: เกรด</a><a class="d2" href="#s-9-ขั้นที่-7-force-rank">9. ขั้นที่ 7: Force Rank</a><a class="d2" href="#s-10-workflow-ต่อ-structure-ตามระบบเดิม">10. Workflow ต่อ Structure (ตามระบบเดิม)</a><a class="d2" href="#s-11-ประเด็นที่ต้องให้-hr-ยืนยัน">11. ประเด็นที่ต้องให้ HR ยืนยัน</a></nav>
+  <main><section class="sec"><h2 id="s-1-ภาพรวม">1. ภาพรวม</h2><p>วิธีนี้ยึดตามที่ระบบ SEE KPI เดิมใช้จริง (เห็นได้จากหน้า Assignment และหน้า Appraisal):</p>
+<ul>
+<li>KPI แต่ละข้อมี <strong>ค่าเป้าหมาย 5 ระดับ (คะแนน 1–5) ในทุกงวด</strong> ตามความถี่ของ KPI: Monthly 12 งวด, Quarterly 4 งวด หรือ Yearly 1 งวด</li>
+<li>คะแนนของแต่ละงวด คือระดับสูงสุดที่ผลงานจริงทำได้</li>
+<li>คะแนนรวมแสดงเป็น <strong>สเกล 100 และสเกล 5 คู่กัน</strong> เช่น <code>71.20 (3.56) / 100.00 (5.00)</code></li>
+<li><strong>น้ำหนักของแต่ละ Structure ขึ้นกับ Level Group</strong> ของพนักงาน (ตั้งค่าที่ Appraisal Criteria)</li>
+<li><strong>เกรดมี 5 ระดับ</strong>: FE‹S›, EE‹A›, FM‹B›, PM‹C› และ NM‹D›</li>
+</ul>
+<figure class="diagram"><div class="scroll"><pre class="mermaid">flowchart LR
+  A[ผลงานจริงรายงวด] --&gt; B[1. คะแนนรายงวด&lt;br/&gt;เทียบเป้า 5 ระดับ]
+  B --&gt; C[2. คะแนน KPI&lt;br/&gt;เฉลี่ยทุกงวดที่มีผล]
+  R[Rating Competency 1–5] --&gt; D
+  C --&gt; D[3. Weight Score&lt;br/&gt;คะแนน ÷ 5 × %Weight]
+  D --&gt; E[4. คะแนน Structure&lt;br/&gt;รวม Weight Score = 0–100]
+  E --&gt; F[5. คะแนนรวม&lt;br/&gt;Σ คะแนน Structure × น้ำหนักตาม Level Group]
+  G[หัวข้อหักคะแนน] --&gt; F
+  F --&gt; H[6. เกรด FE / EE / FM / PM / NM]
+  H --&gt; I[7. Force Rank]</pre></div></figure></section><section class="sec"><h2 id="s-2-ค่าตั้งต้นที่ใช้ในตัวอย่าง">2. ค่าตั้งต้นที่ใช้ในตัวอย่าง</h2><p><strong>Structure</strong> (4 Structure ตามระบบเดิม): Company Performance, Project Performance, Individual Performance และ Competency</p>
+<p><strong>Appraisal Criteria: น้ำหนัก Structure ตาม Level Group</strong> (ค่าตัวอย่าง ส่วนค่าจริงต้องดึงจากระบบเดิม)</p>
+<div class="scroll table-wrap"><table><thead><tr><th>Level Group</th><th>Company Performance</th><th>Project Performance</th><th>Individual Performance</th><th>Competency</th></tr></thead><tbody><tr><td>Company level (Corporate)</td><td>100</td><td>–</td><td>–</td><td>–</td></tr><tr><td>Management (M1–M3)</td><td>20</td><td>50</td><td>–</td><td>30</td></tr><tr><td>Engineer / Professional (P1–P4)</td><td>–</td><td>40</td><td>40</td><td>20</td></tr><tr><td>Supervisor / Foreman (S1–S3)</td><td>–</td><td>50</td><td>50</td><td>–</td></tr></tbody></table></div><p><strong>Grade Criteria</strong> (ค่าตัวอย่าง)</p>
+<div class="scroll table-wrap"><table><thead><tr><th>เกรด</th><th>ความหมาย</th><th>ช่วงคะแนนรวม</th><th>ขึ้นเงินเดือน</th><th>โบนัส (เดือน)</th></tr></thead><tbody><tr><td>FE‹S›</td><td>Far Exceeds Expectation</td><td>90.00 – 100</td><td>8%</td><td>3.0</td></tr><tr><td>EE‹A›</td><td>Exceeds Expectation</td><td>75.00 – 89.99</td><td>6%</td><td>2.0</td></tr><tr><td>FM‹B›</td><td>Fully Meets Expectation</td><td>55.00 – 74.99</td><td>4%</td><td>1.5</td></tr><tr><td>PM‹C›</td><td>Partially Meets Expectation</td><td>40.00 – 54.99</td><td>2%</td><td>0.5</td></tr><tr><td>NM‹D›</td><td>Not Meet Expectation</td><td>0 – 39.99</td><td>0%</td><td>0</td></tr></tbody></table></div><p>หมายเหตุ: ถ้าทุก KPI ได้ตามเป้า (ระดับ 3) คะแนนรวมคือ 3 ÷ 5 = <strong>60.00</strong> ช่วงเกรดในตัวอย่างจึงวาง 60 ไว้ใน FM (Fully Meets) ซึ่ง HR ต้องยืนยันช่วงจริงจากระบบเดิม</p>
+<p><strong>Force Rank Group</strong>: FE 10% · EE 20% · FM 50% · PM 15% · NM 5%</p>
+</section><section class="sec"><h2 id="s-3-ขั้นที่-1-คะแนนรายงวดจากเป้าหมาย-5-ระดับ">3. ขั้นที่ 1: คะแนนรายงวดจากเป้าหมาย 5 ระดับ</h2><p>ในหน้า Assignment ให้กรอกค่าเป้าหมาย L1–L5 ของทุกงวด (กดปุ่ม <strong>ใช้กับทุกงวด / APPLY ALL</strong> เพื่อคัดลอกงวดแรกไปทุกงวด) โดย <strong>L3 คือค่าเป้าหมาย</strong></p>
+<div class="scroll table-wrap"><table><thead><tr><th>กรณี</th><th>วิธีระบบรู้</th><th>กฎ</th></tr></thead><tbody><tr><td>ยิ่งมากยิ่งดี</td><td>L5 ≥ L1 (ค่าเพิ่มขึ้น)</td><td>คะแนน = ระดับ k สูงสุดที่ <strong>ผลจริง ≥ Lk</strong></td></tr><tr><td>ยิ่งน้อยยิ่งดี</td><td>L5 &lt; L1 (ค่าลดลง)</td><td>คะแนน = ระดับ k สูงสุดที่ <strong>ผลจริง ≤ Lk</strong></td></tr><tr><td>ผลจริงแย่กว่า L1</td><td>–</td><td>คะแนน = <strong>0</strong></td></tr><tr><td>ยังไม่มีผลจริง</td><td>–</td><td>ไม่นับงวดนั้น</td></tr></tbody></table></div><p><strong>ตัวอย่าง 1.1: SPI (Monthly, ยิ่งมากยิ่งดี) เป้า L1–L5 = 0.85 / 0.90 / 0.95 / 1.00 / 1.05</strong></p>
+<div class="scroll table-wrap"><table><thead><tr><th>งวด</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th></tr></thead><tbody><tr><td>ผลจริง</td><td>0.97</td><td>1.01</td><td>0.94</td><td>0.99</td><td>1.02</td><td>1.06</td><td>0.92</td><td>0.98</td><td>1.00</td><td>1.03</td></tr><tr><td>คะแนน</td><td>3</td><td>4</td><td>2</td><td>3</td><td>4</td><td>5</td><td>2</td><td>3</td><td>4</td><td>4</td></tr></tbody></table></div><p>เช่น Jan 0.97 ถึง L3 (0.95) แต่ไม่ถึง L4 (1.00) จึงได้ 3 คะแนน ส่วน Sep 1.00 เท่ากับ L4 พอดีจึงได้ 4 คะแนน (ถึงพอดีถือว่าได้)</p>
+<p><strong>ตัวอย่าง 1.2: จำนวนรายการปรับปรุง Audit (Quarterly, ยิ่งน้อยยิ่งดี) เป้า L1–L5 = 4 / 3 / 2 / 1 / 0</strong> (ค่าเดียวกับที่เห็นในหน้าจอระบบเดิม)</p>
+<div class="scroll table-wrap"><table><thead><tr><th>งวด</th><th>QTR 1</th><th>QTR 2</th><th>QTR 3</th><th>QTR 4</th></tr></thead><tbody><tr><td>ผลจริง</td><td>2</td><td>1</td><td>0</td><td>3</td></tr><tr><td>คะแนน</td><td>3</td><td>4</td><td>5</td><td>2</td></tr></tbody></table></div><p><strong>ตัวอย่าง 1.3: ผลแย่กว่าระดับ 1</strong> LTIFR เป้า 1.0 / 0.8 / 0.6 / 0.4 / 0.2 แต่ผลจริง 1.2 (มากกว่า L1) จึงได้ <strong>0 คะแนน</strong></p>
+</section><section class="sec"><h2 id="s-4-ขั้นที่-2-คะแนน-kpi">4. ขั้นที่ 2: คะแนน KPI</h2><p><strong>คะแนน KPI = ค่าเฉลี่ยของคะแนนทุกงวดที่มีผลจริง</strong> (ปัดทศนิยม 2 ตำแหน่ง)</p>
+<div class="scroll table-wrap"><table><thead><tr><th>KPI</th><th>คะแนนรายงวด</th><th>คะแนน KPI</th></tr></thead><tbody><tr><td>SPI (Monthly, Jan–Oct)</td><td>3, 4, 2, 3, 4, 5, 2, 3, 4, 4</td><td>34 ÷ 10 = <strong>3.40</strong></td></tr><tr><td>LTIFR (Quarterly, QTR 1–3) ผล 0.5 / 0.3 / 0.9 เทียบเป้า 1.0 / 0.8 / 0.6 / 0.4 / 0.2</td><td>3, 4, 1</td><td>8 ÷ 3 = <strong>2.67</strong></td></tr><tr><td>Client satisfaction (Yearly) ผล 4.3 เทียบเป้า 3.6 / 3.8 / 4.0 / 4.2 / 4.4</td><td>4</td><td><strong>4.00</strong></td></tr></tbody></table></div></section><section class="sec"><h2 id="s-5-ขั้นที่-3-4-weight-score-และคะแนน-structure">5. ขั้นที่ 3–4: Weight Score และคะแนน Structure</h2><ul>
+<li><strong>Weight Score</strong> ของ KPI = คะแนน KPI ÷ 5 × %Weight (KPI ที่ยังไม่มีผลนับเป็น 0)</li>
+<li><strong>คะแนน Structure (สเกล 100)</strong> = ผลรวม Weight Score ของทุก KPI ใน Structure (น้ำหนักรวมต้อง 100%)</li>
+<li><strong>คะแนน Structure (สเกล 5)</strong> = สเกล 100 ÷ 20</li>
+</ul>
+<p><strong>ตัวอย่าง 2: พนักงาน Level Group &quot;Supervisor / Foreman&quot; (Project 50% / Individual 50%)</strong></p>
+<p>Project Performance</p>
+<div class="scroll table-wrap"><table><thead><tr><th>KPI</th><th>คะแนน</th><th>%Weight</th><th>Weight Score</th></tr></thead><tbody><tr><td>SPI</td><td>3.40</td><td>40</td><td>3.40 ÷ 5 × 40 = 27.20</td></tr><tr><td>LTIFR</td><td>2.67</td><td>30</td><td>2.67 ÷ 5 × 30 = 16.02</td></tr><tr><td>Client satisfaction</td><td>4.00</td><td>30</td><td>4.00 ÷ 5 × 30 = 24.00</td></tr><tr><td><strong>รวม</strong></td><td></td><td><strong>100</strong></td><td><strong>67.22 (3.36)</strong></td></tr></tbody></table></div><p>Individual Performance</p>
+<div class="scroll table-wrap"><table><thead><tr><th>KPI</th><th>คะแนนรายงวด</th><th>คะแนน</th><th>%Weight</th><th>Weight Score</th></tr></thead><tbody><tr><td>ชั่วโมงอบรม (Yearly) ผล 45 เทียบเป้า 20 / 30 / 40 / 50 / 60</td><td>3</td><td>3.00</td><td>30</td><td>18.00</td></tr><tr><td>Shop drawing ผ่านครั้งแรก % (Quarterly) ผล 82 / 88 / 91 / 76 เทียบเป้า 60 / 70 / 80 / 90 / 95</td><td>3, 3, 4, 2</td><td>3.00</td><td>40</td><td>24.00</td></tr><tr><td>รายการปรับปรุง Audit (ตัวอย่าง 1.2)</td><td>3, 4, 5, 2</td><td>3.50</td><td>30</td><td>21.00</td></tr><tr><td><strong>รวม</strong></td><td></td><td></td><td><strong>100</strong></td><td><strong>63.00 (3.15)</strong></td></tr></tbody></table></div></section><section class="sec"><h2 id="s-6-ขั้นที่-5-คะแนนรวม">6. ขั้นที่ 5: คะแนนรวม</h2><p><strong>คะแนนรวม = Σ (คะแนน Structure สเกล 100 × น้ำหนัก Structure ตาม Level Group) − แต้มหัก</strong></p>
+<div class="scroll table-wrap"><table><thead><tr><th>Structure</th><th>คะแนน</th><th>น้ำหนัก</th><th>คิดเป็น</th></tr></thead><tbody><tr><td>Project Performance</td><td>67.22</td><td>50%</td><td>33.61</td></tr><tr><td>Individual Performance</td><td>63.00</td><td>50%</td><td>31.50</td></tr><tr><td><strong>คะแนนรวม</strong></td><td></td><td></td><td><strong>65.11 (3.26) / 100.00 (5.00)</strong> ได้เกรด <strong>FM‹B›</strong></td></tr></tbody></table></div><p><strong>ตัวอย่าง 3: Structure ที่ยังไม่มีผล</strong> ถ้า Project Performance ได้ 100 แต่ Individual Performance ยังไม่มีผลเลย คะแนนรวมจะเป็น 100 × 50% + 0 × 50% = <strong>50.00 (2.50)</strong> ซึ่งตรงกับที่ระบบเดิมแสดงในหน้าประเมินระหว่างรอบ</p>
+<p><strong>Competency</strong> ใช้ Rating 1–5 จากผู้ประเมินเป็นคะแนนของแต่ละหัวข้อ แล้วคำนวณ Weight Score และคะแนน Structure ด้วยวิธีเดียวกัน</p>
+</section><section class="sec"><h2 id="s-6a-waive-ยกเว้น-kpi">6A. Waive (ยกเว้น KPI)</h2><p>ในหน้าประเมินของระบบเดิม KPI แต่ละข้อมีสวิตช์ <strong>Waive</strong> ใช้กรณีที่ KPI นั้นวัดไม่ได้ เช่น โครงการถูกยกเลิก หรือย้ายงานกลางปี</p>
+<ul>
+<li>ผู้ประเมิน (Evaluator) หรือ Admin เท่านั้นที่ Waive ได้ ต้องระบุเหตุผลทุกครั้ง และทำไม่ได้หลังสถานะ End to Vertical</li>
+<li>KPI ที่ Waive <strong>ไม่ถูกนำมาคิดคะแนน</strong> และน้ำหนักของ KPI ที่เหลือใน Structure เดียวกันถูก <strong>ปรับรวมกลับเป็น 100%</strong></li>
+<li>สูตร: คะแนน Structure = Σ Weight Score ของ KPI ที่ไม่ถูก Waive × 100 ÷ Σ %Weight ของ KPI ที่ไม่ถูก Waive</li>
+</ul>
+<p><strong>ตัวอย่าง 2A</strong> (ต่อจากตัวอย่าง 2: Individual Performance) Waive &quot;รายการปรับปรุง Audit&quot; (30%) → (18.00 + 24.00) × 100 ÷ 70 = <strong>60.00 (3.00)</strong> แทน 63.00</p>
+</section><section class="sec"><h2 id="s-6b-sum-up-รวมผลจากผู้ใต้บังคับบัญชา">6B. SUM UP (รวมผลจากผู้ใต้บังคับบัญชา)</h2><p>ปุ่ม <strong>SUM UP</strong> ในหน้าประเมินดึงผลจริงของ KPI เดียวกันจาก Scorecard ของผู้ใต้บังคับบัญชาในแบบฟอร์มเดียวกัน มาเป็นผลจริงของ Scorecard นี้ทีละงวด</p>
+<div class="scroll table-wrap"><table><thead><tr><th>Scorecard</th><th>ผู้ใต้บังคับบัญชาที่นำมารวม</th></tr></thead><tbody><tr><td>รายบุคคล (เช่น ผู้จัดการแผนก)</td><td>พนักงานที่มีหัวหน้า (Chief) เป็นเจ้าของ Scorecard นี้</td></tr><tr><td>องค์กร (Corporate)</td><td>Scorecard รายบุคคลทุกใบในหน่วยงานนั้นและหน่วยงานย่อย</td></tr></tbody></table></div><ul>
+<li>KPI ที่ตั้ง <strong>Sum Up</strong> (เช่น จำนวนครั้ง หรือยอดเงิน) ใช้ <strong>ผลรวม</strong> ส่วน KPI อื่น (เช่น %, Index) ใช้ <strong>ค่าเฉลี่ย</strong></li>
+<li>ไม่นับงวดที่ผู้ใต้บังคับบัญชายังไม่กรอก และไม่นับ KPI ที่ถูก Waive</li>
+<li>ทำได้เฉพาะสถานะที่อนุญาตให้กรอกผล และค่าที่ได้จาก SUM UP แสดงสัญลักษณ์ Σ ในตารางรายงวด</li>
+</ul>
+<p><strong>ตัวอย่าง 2B</strong>: SPI งวด Jan ของลูกทีม 3 คน = 0.97, 1.03, 0.94 → ค่าเฉลี่ย <strong>0.98</strong> · จำนวนรายการปรับปรุง Audit (Sum Up) = 2, 1, 0 และอีกคนยังไม่กรอก → ผลรวม <strong>3</strong></p>
+</section><section class="sec"><h2 id="s-7-deduct-score-กรณีเปิดใช้-structure-ประเภทหักคะแนน">7. Deduct score (กรณีเปิดใช้ Structure ประเภทหักคะแนน)</h2><p>สูตรเดียวกับหน้าจอ STT03 ของระบบเดิม: ส่วนเกิน = max(0, ผลจริง − <code>max_value</code>), แต้มหัก = ส่วนเกิน × <code>unit_deduct_score</code> และถ้าผลจริงถึง <code>value_get_zero</code> คะแนนรวมเป็น 0 ทันที</p>
+<p><strong>ตัวอย่าง 4:</strong> คะแนนรวม 65.11 · มาสาย 5 ครั้ง (ยอมให้ 3 ครั้ง, หักครั้งละ 0.5) ได้แต้มหัก 1.0 · ขาดงาน 1 วัน (หักวันละ 2, Get Zero = 3) ได้แต้มหัก 2.0 → <strong>62.11</strong> · แต่ถ้าขาดงาน 3 วัน → <strong>0</strong></p>
+<p>หมายเหตุ: Config ปัจจุบันของ Syntec ในระบบเดิมมีเฉพาะ 4 Structure ข้างต้น ไม่ได้ใช้ Structure หักคะแนน แต่ระบบรองรับไว้</p>
+</section><section class="sec"><h2 id="s-8-ขั้นที่-6-เกรด">8. ขั้นที่ 6: เกรด</h2><p>ปัดคะแนนรวมเป็นทศนิยม 2 ตำแหน่ง แล้วเทียบกับ Grade Criteria เช่น 65.11 ได้ <strong>FM‹B›</strong> ส่วน 89.995 ปัดเป็น 90.00 ได้ <strong>FE‹S›</strong></p>
+<p>เกรดสุดท้ายที่ใช้คำนวณเงิน: เกรดที่ Admin ปรับ → เกรดจาก Force Rank → เกรดจากคะแนน</p>
+</section><section class="sec"><h2 id="s-9-ขั้นที่-7-force-rank">9. ขั้นที่ 7: Force Rank</h2><p><strong>9.1 จำนวนคนต่อเกรด (Largest Remainder)</strong>: ปัดลงก่อน แล้วแจกที่นั่งที่เหลือให้เกรดที่มีเศษมากที่สุด (เศษเท่ากัน: ให้เกรดที่ใกล้ FM ก่อน ถ้าห่างเท่ากันให้เกรดที่ต่ำกว่าก่อน)</p>
+<div class="scroll table-wrap"><table><thead><tr><th>จำนวนคนในกลุ่ม</th><th>FE</th><th>EE</th><th>FM</th><th>PM</th><th>NM</th></tr></thead><tbody><tr><td>16 (โควตา 1.6 / 3.2 / 8.0 / 2.4 / 0.8)</td><td>2</td><td>3</td><td>8</td><td>2</td><td>1</td></tr><tr><td>10 (โควตา 1.0 / 2.0 / 5.0 / 1.5 / 0.5 เศษ PM กับ NM เท่ากัน PM ใกล้ FM กว่า)</td><td>1</td><td>2</td><td>5</td><td>2</td><td>0</td></tr><tr><td>7 (โควตา 0.7 / 1.4 / 3.5 / 1.05 / 0.35)</td><td>1</td><td>1</td><td>4</td><td>1</td><td>0</td></tr></tbody></table></div><p><strong>9.2 จัดอันดับ</strong>: เรียงคะแนนรวม → คะแนน KPI → คะแนน Competency → รหัสพนักงาน แล้วแจกเกรดตามที่นั่ง ถ้าคนที่คะแนนเท่ากันได้คนละเกรด ระบบติดธง <strong>Tie</strong> และกลุ่มที่มีน้อยกว่า 5 คนไม่บังคับ Force Rank</p>
+<p><strong>ตัวอย่าง 5: หน่วยงาน 7 คน</strong></p>
+<div class="scroll table-wrap"><table><thead><tr><th>อันดับ</th><th>พนักงาน</th><th>คะแนนรวม</th><th>KPI</th><th>เกรดจากคะแนน</th><th>เกรด Force Rank</th></tr></thead><tbody><tr><td>1</td><td>E101</td><td>88.40</td><td>4.20</td><td>EE</td><td><strong>FE</strong></td></tr><tr><td>2</td><td>E102</td><td>84.00</td><td>4.00</td><td>EE</td><td><strong>EE</strong></td></tr><tr><td>3</td><td>E103</td><td>79.20</td><td>3.90</td><td>EE</td><td><strong>FM</strong></td></tr><tr><td>4</td><td>E104</td><td>75.60</td><td>3.90</td><td>EE</td><td><strong>FM</strong></td></tr><tr><td>5</td><td>E105</td><td>70.10</td><td>3.60</td><td>FM</td><td><strong>FM</strong></td></tr><tr><td>6</td><td>E107</td><td>64.50</td><td>3.60</td><td>FM</td><td><strong>FM</strong> (Tie)</td></tr><tr><td>7</td><td>E106</td><td>64.50</td><td>3.40</td><td>FM</td><td><strong>PM</strong> (Tie)</td></tr></tbody></table></div></section><section class="sec"><h2 id="s-10-workflow-ต่อ-structure-ตามระบบเดิม">10. Workflow ต่อ Structure (ตามระบบเดิม)</h2><p>แต่ละ Structure ของพนักงานมีสถานะของตัวเอง เช่น Project Performance อาจอยู่ที่ &quot;Review Actual&quot; ขณะที่ Competency ยังเป็น &quot;Appraisal&quot;</p>
+<figure class="diagram"><div class="scroll"><pre class="mermaid">stateDiagram-v2
+  [*] --&gt; APPROVE_ITEM
+  APPROVE_ITEM --&gt; SAVE_DRAFT_ACTUAL : owner
+  APPROVE_ITEM --&gt; REVIEW_ACTUAL : owner
+  APPROVE_ITEM --&gt; REJECT_ITEM : owner
+  SAVE_DRAFT_ACTUAL --&gt; REVIEW_ACTUAL : owner
+  REJECT_ITEM --&gt; APPROVE_ITEM : evaluator
+  REVIEW_ACTUAL --&gt; APPROVE_ACTUAL : evaluator
+  REVIEW_ACTUAL --&gt; REJECT_ACTUAL : evaluator
+  REJECT_ACTUAL --&gt; REVIEW_ACTUAL : owner
+  APPROVE_ACTUAL --&gt; ADMIN_APPROVE_ACTUAL : admin
+  APPROVE_ACTUAL --&gt; ADMIN_REJECT_ACTUAL : admin
+  APPROVE_ACTUAL --&gt; RE_WORK : evaluator
+  ADMIN_REJECT_ACTUAL --&gt; REVIEW_ACTUAL : owner
+  RE_WORK --&gt; REVIEW_ACTUAL : owner
+  ADMIN_APPROVE_ACTUAL --&gt; END_TO_VERTICAL : admin
+  END_TO_VERTICAL --&gt; END_TO_HORIZONTAL : admin
+  END_TO_HORIZONTAL --&gt; [*]</pre></div></figure><ul>
+<li><strong>owner</strong> = พนักงานเจ้าของผลงาน · <strong>evaluator</strong> = หัวหน้า (Chief), ทุกคนใน <strong>ACTION TO</strong> ของ Scorecard นั้น หรือ HR · <strong>admin</strong> = ผู้ดูแลระบบ</li>
+<li><strong>ACTION TO</strong>: ลำดับผู้ประเมิน (Seq No, พนักงาน, ตำแหน่ง, หน่วยงาน) ของแต่ละ Scorecard HR ตั้งค่าได้ ค่าเริ่มต้นคือหัวหน้าโดยตรง และพนักงานเป็นผู้ประเมินของตัวเองไม่ได้</li>
+<li>กรอกผลจริงได้เฉพาะสถานะ Approve Item, Save Draft Actual, Reject Actual, Admin Reject Actual และ Re-Work</li>
+<li>Competency: Appraisal → Save Draft / Submit (ผู้ประเมิน) → Approve / Reject (admin) → End to Vertical</li>
+<li>ก่อนเปลี่ยนสถานะ น้ำหนัก KPI ใน Structure ต้องรวมได้ 100% (ฐานข้อมูลบังคับด้วย Trigger)</li>
+</ul>
+</section><section class="sec"><h2 id="s-11-ประเด็นที่ต้องให้-hr-ยืนยัน">11. ประเด็นที่ต้องให้ HR ยืนยัน</h2><div class="scroll table-wrap"><table><thead><tr><th>#</th><th>ประเด็น</th><th>ค่าที่ระบบใช้ตอนนี้</th><th>ทางเลือกอื่น</th></tr></thead><tbody><tr><td>1</td><td>ผลแย่กว่าระดับ 1 ได้กี่คะแนน</td><td>0</td><td>1</td></tr><tr><td>2</td><td>คะแนน KPI จากหลายงวด</td><td>ค่าเฉลี่ยของทุกงวดที่มีผล</td><td>ใช้งวดล่าสุด หรือรวมผลจริงก่อนแล้วเทียบเป้าของทั้งปี</td></tr><tr><td>3</td><td>คะแนนระหว่างระดับ</td><td>ขั้นบันได (ได้ระดับที่ถึง)</td><td>เทียบสัดส่วนระหว่างระดับ (Interpolation)</td></tr><tr><td>4</td><td>ช่วงคะแนนของเกรด FE–NM</td><td>90 / 75 / 55 / 40</td><td>ค่าจริงจาก Grade Criteria ในระบบเดิม</td></tr><tr><td>5</td><td>น้ำหนัก Structure ของแต่ละ Level Group</td><td>ค่าตัวอย่างในหัวข้อ 2</td><td>ค่าจริงจาก Appraisal Criteria ในระบบเดิม (มี 20 Level Group)</td></tr><tr><td>6</td><td>เศษเท่ากันใน Force Rank</td><td>ใกล้ FM ก่อน ถ้าห่างเท่ากันให้เกรดต่ำกว่าก่อน</td><td>ให้เกรดที่สูงกว่าก่อน</td></tr><tr><td>7</td><td>ขนาดกลุ่มขั้นต่ำของ Force Rank</td><td>5 คน</td><td>10 คน หรือรวมกลุ่มเล็กเข้าหน่วยงานแม่</td></tr><tr><td>8</td><td>Force Rank ปรับเกรดขึ้นได้หรือไม่</td><td>ปรับได้ทั้งขึ้นและลง</td><td>ปรับลงได้อย่างเดียว</td></tr><tr><td>9</td><td>ความหมายของ Value Get Zero (ถ้าเปิดใช้ Deduct)</td><td>คะแนนรวมเป็น 0</td><td>เฉพาะ Structure นั้นเป็น 0</td></tr><tr><td>10</td><td>KPI ที่ Waive</td><td>ไม่นับ และปรับน้ำหนักที่เหลือเป็น 100%</td><td>นับเป็น 0 คะแนน หรือให้คะแนนกลาง (3)</td></tr><tr><td>11</td><td>วิธีรวมผลของ SUM UP</td><td>ผลรวมสำหรับ KPI ที่ตั้ง Sum Up นอกนั้นเฉลี่ย</td><td>ถ่วงน้ำหนักตามขนาดงาน (เช่น มูลค่าโครงการ)</td></tr></tbody></table></div></section></main>
+</div>

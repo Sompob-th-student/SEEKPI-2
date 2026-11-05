@@ -1,0 +1,525 @@
+<title>SEEKPI-2 Software Specification</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: engineering spec sheet with a title block band and a sticky outline rail */
+:root {
+  --bg: #f6f8fb; --paper: #ffffff; --ink: #18222f; --muted: #5b6878; --line: #dbe2ea;
+  --navy: #17324d; --blue: #1a7fc4; --gold: #b8860b; --tint: #eaf2fa; --code: #f1f4f8;
+  --f-body: 'IBM Plex Sans Thai', 'Sarabun', 'Leelawadee UI', system-ui, sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1620; --paper: #151f2b; --ink: #e3e9f0; --muted: #9aa8b8; --line: #2a3747;
+  --navy: #9cc3e8; --blue: #5fb0ea; --gold: #e0b44c; --tint: #1b2a3a; --code: #1b2531; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f1620; --paper: #151f2b; --ink: #e3e9f0; --muted: #9aa8b8; --line: #2a3747;
+  --navy: #9cc3e8; --blue: #5fb0ea; --gold: #e0b44c; --tint: #1b2a3a; --code: #1b2531; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15.5px/1.75 var(--f-body); margin: 0 }
+a { color: var(--blue) }
+a:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 3px }
+.band { background: var(--paper); border-bottom: 1px solid var(--line);
+  padding-block: 32px 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+.band-in { max-width: 1240px; margin: 0 auto; display: grid; gap: 18px }
+.kicker { font: 500 12px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--gold) }
+h1 { margin: 0; font-size: clamp(28px, 4.2vw, 42px); line-height: 1.15; color: var(--navy); text-wrap: balance; font-weight: 700 }
+dl.meta { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); border: 1px solid var(--line); border-radius: 6px; overflow: hidden }
+dl.meta > div { padding: 10px 14px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-width: 0 }
+dl.meta dt { font: 500 11px/1.4 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+dl.meta dd { margin: 2px 0 0; font-size: 14px; overflow-wrap: anywhere }
+.wrap { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 40px;
+  padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); align-self: start; max-height: calc(100vh - 32px); overflow: auto;
+  display: grid; gap: 2px; font-size: 13.5px; padding-right: 8px }
+nav.toc .lbl { font: 500 11px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px }
+nav.toc a { text-decoration: none; color: var(--muted); padding: 3px 8px; border-left: 2px solid transparent; line-height: 1.45 }
+nav.toc a:hover { color: var(--ink); border-left-color: var(--line) }
+nav.toc a.d2 { color: var(--ink); font-weight: 600; margin-top: 8px }
+nav.toc a.d3 { padding-left: 18px }
+main { min-width: 0; display: grid; gap: 22px }
+.sec { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 8px 28px 24px; min-width: 0 }
+.sec > :first-child { margin-top: 18px }
+h2 { font-size: 23px; color: var(--navy); margin: 22px 0 10px; text-wrap: balance; scroll-margin-top: 16px; font-weight: 700 }
+h3 { font-size: 17px; color: var(--ink); margin: 26px 0 8px; scroll-margin-top: 16px; font-weight: 600 }
+p, li { max-width: 72ch }
+ul, ol { padding-left: 1.3em }
+code { font: 13px/1.5 var(--f-mono); background: var(--code); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere }
+.scroll { overflow-x: auto; max-width: 100% }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line) }
+th { font: 600 12px/1.4 var(--f-body); letter-spacing: .03em; color: var(--muted); background: var(--tint); white-space: nowrap }
+td:first-child { font-weight: 500 }
+.table-wrap { border: 1px solid var(--line); border-radius: 6px; margin: 12px 0 }
+.table-wrap tr:last-child td { border-bottom: 0 }
+figure.diagram { margin: 14px 0; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); padding: 12px }
+pre.mermaid { margin: 0; min-width: 640px; background: transparent; text-align: center }
+pre.code { background: var(--code); padding: 14px; border-radius: 6px; font: 13px/1.6 var(--f-mono) }
+@media (max-width: 900px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 20px }
+  nav.toc { position: static; max-height: none; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 14px }
+  nav.toc a.d3 { display: none }
+  .sec { padding: 4px 16px 18px }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth } }
+</style>
+<header class="band"><div class="band-in">
+  <div class="kicker">Syntec Construction · Digital Engineering · Software Requirements</div>
+  <h1>SEEKPI-2 Software Specification</h1>
+  <dl class="meta"><div><dt>ระบบ</dt><dd>SEEKPI-2: ระบบบริหาร KPI และประเมินผลการปฏิบัติงาน (Performance Management System)</dd></div><div><dt>องค์กร</dt><dd>Syntec Construction Public Company Limited</dd></div><div><dt>เวอร์ชันเอกสาร</dt><dd>1.3 (5 พฤศจิกายน 2569) เพิ่ม Waive, SUM UP และ ACTION TO</dd></div><div><dt>สถานะ</dt><dd>Draft for review</dd></div><div><dt>การตัดสินใจล่าสุด</dt><dd>ติดตั้ง On-premise, ฐานข้อมูล SQLite, ไม่เชื่อมต่อ D365</dd></div><div><dt>เอกสารอ้างอิง</dt><dd><code>rea-analysis/SPEC.md</code> (ผล Reverse Engineering ระบบ SEEKPI เดิมด้วย REA), <code>database/schema.sql</code>, <code>docs/SEEKPI-2_Scoring_Method.md</code>, prototype ใน <code>seekpi-2/</code></dd></div></dl>
+</div></header>
+<div class="wrap">
+  <nav class="toc" aria-label="สารบัญ"><div class="lbl">สารบัญ</div><a class="d2" href="#s-1-วัตถุประสงค์และขอบเขต">1. วัตถุประสงค์และขอบเขต</a><a class="d3" href="#s-1-1-วัตถุประสงค์">1.1 วัตถุประสงค์</a><a class="d3" href="#s-1-2-ขอบเขต-in-scope">1.2 ขอบเขต (In scope)</a><a class="d3" href="#s-1-3-นอกขอบเขต-out-of-scope-phase-1">1.3 นอกขอบเขต (Out of scope, phase 1)</a><a class="d3" href="#s-1-4-คำศัพท์">1.4 คำศัพท์</a><a class="d2" href="#s-2-ผู้ใช้งานและบทบาท">2. ผู้ใช้งานและบทบาท</a><a class="d2" href="#s-3-functional-requirements">3. Functional Requirements</a><a class="d2" href="#s-4-business-rules-scoring">4. Business Rules (Scoring)</a><a class="d2" href="#s-5-non-functional-requirements">5. Non-Functional Requirements</a><a class="d2" href="#s-6-architecture">6. Architecture</a><a class="d3" href="#s-6-1-system-context">6.1 System context</a><a class="d3" href="#s-6-2-layered-backend-modular-monolith">6.2 Layered backend (modular monolith)</a><a class="d2" href="#s-7-tech-stack-production">7. Tech Stack (Production)</a><a class="d3" href="#s-7-0-ข้อจำกัดของ-sqlite-และแนวทางรองรับ">7.0 ข้อจำกัดของ SQLite และแนวทางรองรับ</a><a class="d3" href="#s-7-1-environments">7.1 Environments</a><a class="d3" href="#s-7-2-deployment-on-premise">7.2 Deployment (On-premise)</a><a class="d2" href="#s-8-database-design">8. Database Design</a><a class="d3" href="#s-8-1-หลักการออกแบบ">8.1 หลักการออกแบบ</a><a class="d3" href="#s-8-2-domain-overview">8.2 Domain overview</a><a class="d3" href="#s-8-3-erd-security-amp-organization">8.3 ERD: Security &amp; Organization</a><a class="d3" href="#s-8-4-erd-kpi-master-amp-cycle-configuration">8.4 ERD: KPI master &amp; cycle configuration</a><a class="d3" href="#s-8-5-erd-assignment-evaluation-calibration-amp-compensation">8.5 ERD: Assignment, evaluation, calibration &amp; compensation</a><a class="d3" href="#s-8-6-data-dictionary-ตารางหลัก">8.6 Data dictionary (ตารางหลัก)</a><a class="d3" href="#s-8-7-index-performance-และ-backup">8.7 Index, Performance และ Backup</a><a class="d2" href="#s-9-workflow-diagrams">9. Workflow Diagrams</a><a class="d3" href="#s-9-1-annual-performance-cycle">9.1 Annual performance cycle</a><a class="d3" href="#s-9-2-workflow-ต่อ-structure-ตามระบบเดิม">9.2 Workflow ต่อ Structure (ตามระบบเดิม)</a><a class="d3" href="#s-9-3-data-entry-amp-scoring-sequence">9.3 Data entry &amp; scoring sequence</a><a class="d3" href="#s-9-4-force-rank-calibration">9.4 Force rank calibration</a><a class="d3" href="#s-9-5-login-ด้วย-active-directory">9.5 Login ด้วย Active Directory</a><a class="d3" href="#s-9-6-salary-import-amp-compensation">9.6 Salary import &amp; compensation</a><a class="d2" href="#s-10-api-design-rest-api-v1">10. API Design (REST, <code>/api/v1</code>)</a><a class="d2" href="#s-11-migration-จาก-seekpi-เดิม">11. Migration จาก SEEKPI เดิม</a><a class="d2" href="#s-12-delivery-roadmap">12. Delivery Roadmap</a><a class="d2" href="#s-13-ข้อสมมุติและประเด็นที่ต้องยืนยัน">13. ข้อสมมุติและประเด็นที่ต้องยืนยัน</a></nav>
+  <main><section class="sec"><h2 id="s-1-วัตถุประสงค์และขอบเขต">1. วัตถุประสงค์และขอบเขต</h2><h3 id="s-1-1-วัตถุประสงค์">1.1 วัตถุประสงค์</h3><p>SEEKPI-2 พัฒนาขึ้นเพื่อทดแทนระบบ SEEKPI เดิม (<code>kpi.syntec.co.th/seekpi</code>) โดยคงขอบเขตการทำงานเดิมไว้ครบถ้วน ทั้งเมนู สิทธิ์การใช้งาน และหน้าจอรายงาน และปรับปรุงในประเด็นต่อไปนี้</p>
+<ul>
+<li>ปรับโครงสร้างข้อมูลให้รองรับ <strong>Cascading KPI</strong> ตั้งแต่ Corporate ลงไปถึง Division, Department และ Individual</li>
+<li>รองรับการบันทึกผลรายเดือนและ Trend Analysis</li>
+<li>มี <strong>Workflow การอนุมัติที่กำหนดค่าได้</strong> พร้อม Audit Trail ครบทุกขั้นตอน</li>
+<li>นำเข้าข้อมูลพนักงาน โครงสร้างองค์กร และผล KPI จากไฟล์ <strong>Excel/CSV</strong> (ไม่เชื่อมต่อ D365 หรือระบบภายนอกอื่นโดยตรง)</li>
+<li>Login ด้วยบัญชี <strong>Active Directory ของบริษัท (LDAPS)</strong> เหมือนระบบเดิม และมี Local account สำรอง</li>
+<li>ติดตั้ง <strong>On-premise</strong> ใน Data center ของ Syntec ทั้งหมด โดยไม่พึ่ง Cloud service</li>
+<li>สอดคล้องกับ <strong>PDPA</strong> สำหรับข้อมูลเงินเดือนและผลการประเมินรายบุคคล</li>
+</ul>
+<h3 id="s-1-2-ขอบเขต-in-scope">1.2 ขอบเขต (In scope)</h3><div class="scroll table-wrap"><table><thead><tr><th>กลุ่มงาน</th><th>ฟังก์ชัน</th></tr></thead><tbody><tr><td>Manage User</td><td>Role, Users, Permission matrix (View/Add/Edit/Delete/Approve/Export)</td></tr><tr><td>Setup Data</td><td>Company, Organization, Level, Level Group, Position, Position Group, Perspective, KPI Type, UOM, Structure, Competency Score, Appraisal Criteria, Threshold Group, Grade Criteria, Force Rank Group, Form</td></tr><tr><td>KPI Library</td><td>Appraisal Item (KPI / Competency Dictionary)</td></tr><tr><td>People</td><td>Employee, ประวัติการโอนย้าย/เลื่อนตำแหน่ง, Salary history</td></tr><tr><td>Appraisal</td><td>Assignment (Corporate / Organization / Individual), Data Entry รายเดือน, Self/Manager Evaluation, Action Plan, Approval Workflow</td></tr><tr><td>Calibration</td><td>Force Rank ทั้ง 4 แบบ: Company, Vertical (ตามสายงาน), Horizontal (ตามระดับงาน), Horizontal Board</td></tr><tr><td>Compensation</td><td>Import Salary, คำนวณ Merit Increase และ Bonus</td></tr><tr><td>Dashboard</td><td>Branch Performance, Overall Performance, Performance Comparison, Performance Trend</td></tr><tr><td>Report</td><td>รายงาน 9 ฉบับตามระบบเดิม และ Export Excel/PDF</td></tr><tr><td>Setting</td><td>Password Policy, LDAP (Active Directory), E-mail Server, Data Import (Excel/CSV)</td></tr><tr><td>Feedback</td><td>Continuous Feedback / 360, Feedback Report</td></tr></tbody></table></div><h3 id="s-1-3-นอกขอบเขต-out-of-scope-phase-1">1.3 นอกขอบเขต (Out of scope, phase 1)</h3><p>Payroll processing, Learning Management, Mobile native app (phase 1 ใช้ Responsive Web / PWA) และการเชื่อมต่อแบบ Real-time กับ Microsoft Dynamics 365, ระบบ HSE หรือ Cloud service ใด ๆ</p>
+<h3 id="s-1-4-คำศัพท์">1.4 คำศัพท์</h3><div class="scroll table-wrap"><table><thead><tr><th>คำ</th><th>ความหมาย</th></tr></thead><tbody><tr><td>Form</td><td>รอบการประเมิน 1 รอบ ซึ่งผูกกับ Period, Criteria, Threshold, Grade และ Force Rank Group</td></tr><tr><td>Assignment</td><td>Scorecard ของพนักงาน 1 คน หรือหน่วยงาน 1 หน่วยงาน ใน Form หนึ่ง</td></tr><tr><td>Structure</td><td>กลุ่มหัวข้อประเมิน ได้แก่ KPI (quantity), Competency (quality) และ Deduct score</td></tr><tr><td>Threshold</td><td>ตารางแปลง % Achievement เป็นคะแนน 1–5</td></tr><tr><td>Grade Criteria</td><td>ตารางแปลงคะแนนรวม (0–100) เป็นเกรด FE‹S› / EE‹A› / FM‹B› / PM‹C› / NM‹D› พร้อม % ขึ้นเงินเดือนและจำนวนเดือนโบนัส</td></tr><tr><td>เป้าหมาย 5 ระดับ</td><td>ค่าเป้าหมาย L1–L5 (คะแนน 1–5) ของ KPI ในแต่ละงวด (Monthly / Quarterly / Yearly) โดย L3 คือค่าเป้าหมาย</td></tr><tr><td>Force Rank</td><td>การ Calibrate เกรดตามสัดส่วน (Bell curve) ที่กำหนด</td></tr></tbody></table></div></section><section class="sec"><h2 id="s-2-ผู้ใช้งานและบทบาท">2. ผู้ใช้งานและบทบาท</h2><div class="scroll table-wrap"><table><thead><tr><th>Actor</th><th>หน้าที่หลัก</th><th>Data scope</th></tr></thead><tbody><tr><td>System Administrator</td><td>ตั้งค่าระบบ ผู้ใช้ สิทธิ์ และการนำเข้าข้อมูล</td><td>all</td></tr><tr><td>HR Performance Officer</td><td>ตั้งค่า Form/Criteria, มอบหมาย KPI, ติดตามสถานะ, Calibration, ออกรายงาน</td><td>company</td></tr><tr><td>Compensation Officer (C&amp;B)</td><td>นำเข้าเงินเดือน, คำนวณและอนุมัติ Bonus/Merit</td><td>company (ข้อมูลเงินเดือน)</td></tr><tr><td>Executive / Calibration Committee</td><td>ดู Dashboard, อนุมัติผล Force Rank</td><td>company</td></tr><tr><td>Line Manager (Evaluator)</td><td>กำหนด Target, ประเมินผู้ใต้บังคับบัญชา, อนุมัติ Self-evaluation</td><td>subordinate</td></tr><tr><td>Project Manager / Data Owner</td><td>บันทึกผล KPI รายเดือนของโครงการ (SPI, CPI, LTIFR, NCR)</td><td>organization</td></tr><tr><td>Employee</td><td>ยอมรับ KPI, บันทึกผล, Self-evaluation, Action Plan, Feedback</td><td>self</td></tr></tbody></table></div></section><section class="sec"><h2 id="s-3-functional-requirements">3. Functional Requirements</h2><div class="scroll table-wrap"><table><thead><tr><th>ID</th><th>Requirement</th><th>Priority</th></tr></thead><tbody><tr><td>FR-01</td><td>ผู้ใช้ Login ด้วยบัญชี Active Directory (LDAPS bind) ได้ และมี Local account สำรองสำหรับ Admin ซึ่งใช้ Password Policy</td><td>Must</td></tr><tr><td>FR-02</td><td>ระบบแสดงเมนูเฉพาะรายการที่ Role ของผู้ใช้มีสิทธิ์ <code>can_view</code> (ตามกติกาเดิมของ SEEKPI)</td><td>Must</td></tr><tr><td>FR-03</td><td>HR สร้าง Form ประจำปี โดยเลือก Period, Appraisal Criteria, Threshold Group, Grade Criteria และ Force Rank Group</td><td>Must</td></tr><tr><td>FR-04</td><td>HR และ Manager สร้าง Assignment ได้ทั้งแบบ Corporate, Organization และ Individual และมอบหมายพร้อมกันหลายคนได้</td><td>Must</td></tr><tr><td>FR-05</td><td>KPI ที่ระดับบน Deploy (cascade) ลงระดับล่างได้ โดยระดับล่าง Adopt ผลจริงจากระดับบนได้</td><td>Must</td></tr><tr><td>FR-06</td><td>ระบบตรวจสอบว่าน้ำหนัก KPI ในแต่ละ Structure รวม 100% ก่อนเปลี่ยนสถานะ และน้ำหนัก Structure มาจาก Appraisal Criteria ตาม Level Group ของพนักงาน</td><td>Must</td></tr><tr><td>FR-06a</td><td>หน้า Assignment แบ่งแท็บตาม Structure และกำหนดเป้าหมาย 5 ระดับรายงวดของแต่ละ KPI ได้ (มีปุ่ม APPLY ALL)</td><td>Must</td></tr><tr><td>FR-07</td><td>เจ้าของ KPI บันทึกผลจริงรายงวด (<code>assignment_item_period</code>) บนหน้าจอ หรือนำเข้าจากไฟล์ Excel/CSV ได้ เฉพาะสถานะที่อนุญาตให้กรอกผล</td><td>Must</td></tr><tr><td>FR-08</td><td>ระบบคำนวณคะแนนรายงวด, คะแนน KPI, Weight Score, คะแนน Structure, คะแนนรวม (สเกล 100 และ 5) และเกรดอัตโนมัติทุกครั้งที่บันทึกผล (หัวข้อ 4 และ <code>SEEKPI-2_Scoring_Method.md</code>)</td><td>Must</td></tr><tr><td>FR-09</td><td>แต่ละ Structure ของ Scorecard มีสถานะของตัวเองตาม Workflow 11 ขั้นของระบบเดิม (Competency มี Workflow แยก) ปุ่ม Action แสดงเฉพาะขั้นที่ผู้ใช้มีสิทธิ์ทำ และบันทึกประวัติทุกครั้ง</td><td>Must</td></tr><tr><td>FR-09a</td><td><strong>ACTION TO</strong>: กำหนดลำดับผู้ประเมินต่อ Scorecard (ค่าเริ่มต้นคือหัวหน้า) และทุกคนในลำดับมีสิทธิ์อนุมัติหรือไม่อนุมัติผล</td><td>Must</td></tr><tr><td>FR-09b</td><td><strong>Waive</strong>: ผู้ประเมินยกเว้น KPI พร้อมเหตุผล KPI นั้นไม่ถูกนับ และน้ำหนักที่เหลือปรับรวมเป็น 100%</td><td>Must</td></tr><tr><td>FR-09c</td><td><strong>SUM UP</strong>: ดึงผลจริงรายงวดของ KPI เดียวกันจากผู้ใต้บังคับบัญชา (ผลรวมหรือค่าเฉลี่ยตาม Flag Sum Up ของ KPI)</td><td>Should</td></tr><tr><td>FR-10</td><td>Calibration Committee รัน Force Rank ได้ทั้ง 4 โหมด ดูผล Planned vs Actual, ปรับเกรดรายคนพร้อมเหตุผล และ Apply ผล</td><td>Must</td></tr><tr><td>FR-11</td><td>C&amp;B นำเข้าเงินเดือนจาก Excel/CSV โดยระบบตรวจสอบก่อน Apply และเก็บ Batch ไว้ตรวจย้อนหลัง</td><td>Must</td></tr><tr><td>FR-12</td><td>ระบบคำนวณ Merit Increase และ Bonus จากเกรดสุดท้าย และเมื่ออนุมัติแล้ว Export เป็นไฟล์ Excel ให้ทีม Payroll ได้</td><td>Must</td></tr><tr><td>FR-13</td><td>Dashboard 4 หน้าและรายงาน 9 ฉบับ Filter ตาม Form/Organization และ Export Excel/PDF ได้</td><td>Must</td></tr><tr><td>FR-14</td><td>Continuous Feedback: บันทึก Feedback ถึงพนักงาน, ผูกกับ KPI line ได้ และกำหนดสิทธิ์การมองเห็นได้</td><td>Should</td></tr><tr><td>FR-15</td><td>Action Plan ราย KPI (Phase, Task, Plan/Actual date, Progress)</td><td>Should</td></tr><tr><td>FR-16</td><td>แจ้งเตือนในระบบ (In-app) และ E-mail ผ่าน SMTP ภายในบริษัท เมื่อเปลี่ยน Stage หรือใกล้ครบกำหนด Data entry</td><td>Should</td></tr><tr><td>FR-17</td><td>แนบไฟล์หลักฐาน (Evidence) ใน KPI line และ Action Plan ได้ โดยเก็บไฟล์ใน File store บน Server</td><td>Should</td></tr><tr><td>FR-18</td><td>Data Import: นำเข้าพนักงาน, โครงสร้างองค์กร และผล KPI รายเดือนจาก Template Excel/CSV โดยมีขั้นตอน Validate → Preview → Apply และเก็บประวัติทุก Batch</td><td>Should</td></tr><tr><td>FR-19</td><td>ทุกหน้าจอรองรับภาษาไทยและอังกฤษ สลับได้ทันที</td><td>Must</td></tr><tr><td>FR-20</td><td>Usage/Audit log บันทึกการ Login, เพิ่ม, แก้ไข, ลบ, Export และอนุมัติ พร้อมค่าก่อนและหลังแก้ไข</td><td>Must</td></tr></tbody></table></div></section><section class="sec"><h2 id="s-4-business-rules-scoring">4. Business Rules (Scoring)</h2><p>คำอธิบายเต็มพร้อมตัวอย่างการคำนวณอยู่ในเอกสาร <strong>SEEKPI-2 Scoring Method</strong> (<code>docs/SEEKPI-2_Scoring_Method.md</code>) ตัวอย่างทุกข้อในเอกสารนั้นตรวจด้วย Unit test (<code>server/test/scoring.test.js</code>)</p>
+<div class="scroll table-wrap"><table><thead><tr><th>Rule</th><th>สูตร / เงื่อนไข</th></tr></thead><tbody><tr><td>BR-01 Period score</td><td>เทียบผลจริงของงวดกับเป้า L1–L5: ยิ่งมากยิ่งดี (L5 ≥ L1) ใช้ผลจริง ≥ Lk, ยิ่งน้อยยิ่งดี (L5 &lt; L1) ใช้ผลจริง ≤ Lk ได้คะแนน = k สูงสุดที่ผ่าน ถ้าแย่กว่า L1 ได้ 0</td></tr><tr><td>BR-02 KPI score</td><td>ค่าเฉลี่ยคะแนนของทุกงวดที่มีผลจริง (ปัด 2 ตำแหน่ง)</td></tr><tr><td>BR-03 Competency score</td><td>Rating 1–5 จากผู้ประเมินตาม <code>rating_scale</code></td></tr><tr><td>BR-04 Weight score</td><td>คะแนน ÷ 5 × %Weight (KPI ที่ยังไม่มีผลนับ 0)</td></tr><tr><td>BR-05 Structure score</td><td>ผลรวม Weight Score = สเกล 100 และ ÷ 20 = สเกล 5 · KPI ที่ Waive ไม่นับ และปรับน้ำหนักที่เหลือรวมเป็น 100%</td></tr><tr><td>BR-05a SUM UP</td><td>ค่าแต่ละงวด = ผลรวม (KPI ที่ตั้ง Sum Up) หรือค่าเฉลี่ย (KPI อื่น) ของผลจริงลูกทีมในงวดนั้น ไม่นับค่าว่างและ KPI ที่ Waive</td></tr><tr><td>BR-06 Deduct score</td><td>ต่อหัวข้อ: <code>over = max(0, actual − max_value)</code>, <code>deduct = over × unit_deduct_score</code> (ตรงกับหน้าจอ STT03 ของ SEEKPI เดิม)</td></tr><tr><td>BR-07 Value Get Zero</td><td>ถ้า Structure เปิด <code>is_get_zero</code> และ actual ≥ <code>value_get_zero</code> คะแนนรวมเป็น 0</td></tr><tr><td>BR-08 Total score (0–100)</td><td><code>base = Σ(structure score100 × structure weight ตาม Level Group)</code>, <code>result = max(0, base − Σdeduct)</code> ปัด 2 ตำแหน่ง และแสดงสเกล 5 คู่กัน</td></tr><tr><td>BR-09 System grade</td><td>ใช้ <code>grade_band</code> ที่ <code>score_from ≤ result</code> (หลังปัดเศษ)</td></tr><tr><td>BR-10 Effective grade</td><td><code>final_grade</code> ถ้ามี มิฉะนั้นใช้ <code>force_rank_grade</code> มิฉะนั้นใช้ <code>system_grade</code></td></tr><tr><td>BR-11 Force rank seats</td><td>Largest Remainder: ปัดลงก่อน แล้วแจกที่นั่งที่เหลือให้เกรดที่มีเศษมากที่สุด (เศษเท่ากัน: ใกล้ FM ก่อน, ห่างเท่ากัน: เกรดต่ำกว่าก่อน)</td></tr><tr><td>BR-12 Force rank order</td><td>เรียงคะแนนรวม → KPI → Competency → รหัสพนักงาน, ติดธง Tie เมื่อคะแนนเท่ากันแต่ได้คนละเกรด และไม่บังคับกลุ่มที่มีน้อยกว่า 5 คน</td></tr><tr><td>BR-13 Compensation</td><td><code>raise_amount = base_salary × raise_pct</code> และ <code>bonus_amount = base_salary × bonus_months</code> ตาม <code>grade_band</code> ของ Effective grade ปัดเป็นสตางค์</td></tr><tr><td>BR-14 Monthly roll-up</td><td>ค่า actual ของ Form คำนวณจากรายเดือนตาม <code>aggregation</code> ของ item (sum / average / last / max / min / formula)</td></tr><tr><td>BR-15 Lock</td><td>เมื่อ Form อยู่สถานะ <code>closed</code> แก้ไข Assignment ไม่ได้ ยกเว้น Admin ใช้คำสั่ง Reopen ซึ่งระบบบันทึกเหตุผลไว้</td></tr></tbody></table></div></section><section class="sec"><h2 id="s-5-non-functional-requirements">5. Non-Functional Requirements</h2><div class="scroll table-wrap"><table><thead><tr><th>ด้าน</th><th>เป้าหมาย</th></tr></thead><tbody><tr><td>Performance</td><td>หน้าจอทั่วไป p95 &lt; 1.5 s และรายงาน/Dashboard p95 &lt; 3 s ที่พนักงาน 5,000 คน × KPI 15 ข้อ</td></tr><tr><td>Concurrency</td><td>รองรับผู้ใช้พร้อมกัน 500 คนช่วงปิดรอบประเมิน, SQLite WAL (อ่านพร้อมกันได้ไม่จำกัด เขียนทีละ Transaction), Transaction เขียนต้องสั้นกว่า 50 ms และใช้ Optimistic locking (<code>row_version</code>)</td></tr><tr><td>Availability</td><td>99.5% ในเวลาทำการ, RPO ≤ 1 นาที (Litestream replication), RTO ≤ 4 ชั่วโมง (Restore ไป Standby server)</td></tr><tr><td>Security</td><td>OWASP ASVS Level 2, TLS 1.2+ (ใบรับรองจาก Internal CA), argon2id, RBAC + Data scope, Rate limit, CSP, ไฟล์ฐานข้อมูลอ่านได้เฉพาะ Service account</td></tr><tr><td>Privacy (PDPA)</td><td>ข้อมูลเงินเดือนและเกรดเป็นข้อมูลจำกัดสิทธิ์, เข้ารหัสระหว่างส่ง (TLS) และขณะจัดเก็บ (Disk encryption: BitLocker / LUKS), เก็บ Log การเข้าถึง และข้อมูลทั้งหมดอยู่ใน Data center ของบริษัท</td></tr><tr><td>Auditability</td><td>Audit log และ Stage log เป็น Append-only (มี Trigger ป้องกันการแก้ไขและลบ), Archive เป็นไฟล์ฐานข้อมูลรายปี และเก็บไว้อย่างน้อย 7 ปี</td></tr><tr><td>Capacity</td><td>ขนาดฐานข้อมูลประมาณ 1–2 GB ต่อปี ที่พนักงาน 5,000 คน (SQLite รองรับได้สบายถึงระดับหลายร้อย GB)</td></tr><tr><td>Usability</td><td>Responsive ตั้งแต่ 360 px, WCAG 2.1 AA และฟอนต์ไทย Sarabun</td></tr><tr><td>Maintainability</td><td>Test coverage ≥ 70% ใน Service layer, API documented ด้วย OpenAPI 3.1</td></tr></tbody></table></div></section><section class="sec"><h2 id="s-6-architecture">6. Architecture</h2><h3 id="s-6-1-system-context">6.1 System context</h3><figure class="diagram"><div class="scroll"><pre class="mermaid">flowchart LR
+  subgraph Users
+    EMP[Employee / Manager]
+    HR[HR &amp; C&amp;B]
+    EXE[Executive]
+  end
+  subgraph DC[Syntec Data Center: On-premise]
+    subgraph APP[Application server]
+      FE[Web Frontend&lt;br/&gt;React SPA static files]
+      API[Backend API&lt;br/&gt;NestJS · Node.js 24]
+      WRK[In-process jobs&lt;br/&gt;worker_threads + scheduler]
+      DB[(SQLite database&lt;br/&gt;seekpi2.db · WAL)]
+      FS[(File store&lt;br/&gt;Evidence · Import · Export)]
+    end
+    AD[Active Directory&lt;br/&gt;LDAPS]
+    MAIL[Exchange / SMTP relay]
+    NAS[(Backup NAS&lt;br/&gt;Litestream replica)]
+  end
+
+  EMP &amp; HR &amp; EXE --&gt;|HTTPS, intranet / VPN| FE
+  FE --&gt;|REST JSON + JWT| API
+  API --&gt; DB
+  API --&gt; FS
+  API --&gt;|queue job| WRK
+  WRK --&gt; DB
+  API -.-&gt;|bind / group lookup| AD
+  WRK --&gt;|notifications| MAIL
+  DB --&gt;|continuous replication| NAS
+  HR --&gt;|Excel / CSV upload| API</pre></div></figure><h3 id="s-6-2-layered-backend-modular-monolith">6.2 Layered backend (modular monolith)</h3><figure class="diagram"><div class="scroll"><pre class="mermaid">flowchart TB
+  subgraph API[NestJS API]
+    direction TB
+    CTRL[Controllers&lt;br/&gt;REST · OpenAPI · DTO validation]
+    GUARD[Auth Guard · Permission Guard · Data-scope filter]
+    SVC[Domain Services&lt;br/&gt;Org · KPI · Assignment · Scoring · ForceRank · Compensation · Feedback · Report]
+    REPO[Drizzle ORM Repositories&lt;br/&gt;better-sqlite3]
+    EVT[Domain Events&lt;br/&gt;stage.changed · actual.saved · form.closed]
+  end
+  CTRL --&gt; GUARD --&gt; SVC --&gt; REPO --&gt; DB[(SQLite · WAL)]
+  SVC --&gt; EVT --&gt; Q[[job table in SQLite&lt;br/&gt;polled by workers]]
+  Q --&gt; W1[Recalculate worker]
+  Q --&gt; W2[Notification worker]
+  Q --&gt; W3[Excel/CSV import worker]
+  Q --&gt; W4[Report export worker]</pre></div></figure><p>หมายเหตุ: SQLite มี Writer ได้ครั้งละ 1 Transaction ระบบจึงรัน API เป็น <strong>Process เดียว</strong> (ไม่ใช้ Node cluster หรือหลาย Server เขียนพร้อมกัน) และใช้ <code>worker_threads</code> สำหรับงานหนัก เช่น Export รายงาน ซึ่งอ่านอย่างเดียวผ่าน Connection แยก</p>
+</section><section class="sec"><h2 id="s-7-tech-stack-production">7. Tech Stack (Production)</h2><div class="scroll table-wrap"><table><thead><tr><th>Layer</th><th>Technology</th><th>เหตุผล</th></tr></thead><tbody><tr><td>Frontend</td><td>React 19 + TypeScript 5, Vite</td><td>ต่อยอดจาก Prototype และ SEEKPI เดิมที่เป็น React อยู่แล้ว ทีมจึงเรียนรู้ได้เร็ว</td></tr><tr><td>UI Kit</td><td>MUI v7 + MUI X Data Grid Pro</td><td>Data grid รองรับ Grouping, Export และ Virtualization สำหรับรายงานขนาดใหญ่</td></tr><tr><td>State / Data</td><td>TanStack Query v5, Zustand</td><td>จัดการ Cache, Optimistic update และ Server state</td></tr><tr><td>Forms</td><td>React Hook Form + Zod</td><td>Validation schema เดียวกันใช้ร่วมกับ Backend ได้</td></tr><tr><td>Charts</td><td>Apache ECharts (หรือ Recharts)</td><td>Dashboard, Bell curve และ Trend</td></tr><tr><td>i18n</td><td>i18next (th / en)</td><td>นำ Dictionary 538 คีย์จากระบบเดิมมาใช้ต่อ</td></tr><tr><td>Backend</td><td>Node.js 24 LTS + NestJS 11 (TypeScript)</td><td>Modular architecture, DI, Guards สำหรับ RBAC และ OpenAPI ในตัว</td></tr><tr><td>Database</td><td><strong>SQLite 3.45+</strong> (WAL mode) ไฟล์เดียวบน Local SSD</td><td>ไม่ต้องดูแล Database server แยก, Backup ง่าย, เร็วมากสำหรับ Single server และรองรับ 5,000 พนักงานได้สบาย</td></tr><tr><td>DB driver / ORM</td><td>better-sqlite3 11 + Drizzle ORM (Drizzle Kit migrations)</td><td>Synchronous driver ที่เร็วที่สุดสำหรับ SQLite, Drizzle เป็น SQL-first จึงใช้ <code>database/schema.sql</code> เป็น Baseline ได้ตรง ๆ</td></tr><tr><td>Backup / DR</td><td>Litestream (replicate WAL ไป NAS ทุก 1 วินาที) + <code>VACUUM INTO</code> snapshot รายวัน</td><td>RPO ≤ 1 นาที, Restore เป็นไฟล์เดียว</td></tr><tr><td>Auth</td><td>Active Directory ผ่าน LDAPS (ldapts) + JWT access 15 นาที / refresh token (httpOnly cookie)</td><td>ใช้บัญชีบริษัทเดิมโดยไม่พึ่ง Cloud และตรงกับเมนู LDAP ของระบบเดิม</td></tr><tr><td>Background jobs</td><td>ตาราง <code>job</code> ใน SQLite + <code>worker_threads</code> + node-cron</td><td>ไม่ต้องใช้ Redis: Recalculate, Import, Notification และ Export</td></tr><tr><td>File storage</td><td>Local file store บน Server (<code>/data/seekpi2/files</code>) รวมอยู่ใน Backup</td><td>เก็บ Evidence, ไฟล์ Import และ Export</td></tr><tr><td>Reporting</td><td>ExcelJS (xlsx), Playwright PDF rendering</td><td>Export รายงานตาม Template ของ HR</td></tr><tr><td>API docs</td><td>OpenAPI 3.1 (Swagger UI)</td><td>ใช้เป็น Contract ระหว่าง Frontend และ Backend</td></tr><tr><td>Testing</td><td>Vitest, React Testing Library, node:test / Supertest, Playwright E2E</td><td>ทดสอบทั้ง Unit, API และ E2E (รวม Scoring test)</td></tr><tr><td>Observability</td><td>pino (JSON log) → Grafana Loki, Prometheus + node_exporter, Grafana (on-prem)</td><td>ติดตาม Log, Metrics และ Alert ภายในบริษัท</td></tr><tr><td>Runtime / Deploy</td><td>Ubuntu Server 24.04 LTS (หรือ Windows Server 2022), Nginx reverse proxy + TLS, systemd service (หรือ Docker Compose)</td><td>Server เดียวพร้อม Standby, ไม่ต้องใช้ Kubernetes</td></tr><tr><td>CI/CD</td><td>GitLab CE / Azure DevOps Server (on-prem) หรือ GitHub Actions + Self-hosted runner</td><td>Lint → Test → Build → Scan (Trivy) → Deploy ด้วย Script</td></tr><tr><td>Security tooling</td><td>Renovate, Trivy, OWASP ZAP baseline, Secret ใน <code>.env</code> สิทธิ์ 600 หรือ HashiCorp Vault (on-prem)</td><td>ครอบคลุม Supply chain และการจัดการ Secret</td></tr></tbody></table></div><h3 id="s-7-0-ข้อจำกัดของ-sqlite-และแนวทางรองรับ">7.0 ข้อจำกัดของ SQLite และแนวทางรองรับ</h3><div class="scroll table-wrap"><table><thead><tr><th>ข้อจำกัด</th><th>แนวทาง</th></tr></thead><tbody><tr><td>เขียนได้ครั้งละ 1 Transaction</td><td>WAL mode, <code>busy_timeout = 5000</code>, Transaction สั้น และงาน Bulk (Recalculate ทั้ง Form) แบ่ง Batch ละ 200 Assignment</td></tr><tr><td>ขยายเป็นหลาย Application server ไม่ได้</td><td>รัน 1 Process บน Server ที่ Spec พอ (8 vCPU / 16 GB RAM / SSD) และมี Standby server สำหรับ DR</td></tr><tr><td>ไม่มี Network access จากเครื่องอื่น</td><td>เครื่องมือ Report/BI ภายนอกอ่านผ่าน Read-only API หรือ Snapshot ไฟล์รายวัน ไม่เปิดไฟล์ฐานข้อมูลตัวจริงพร้อมกัน</td></tr><tr><td>ไม่มี Partition / Row-level security</td><td>Archive <code>audit_log</code> เป็นไฟล์รายปี และบังคับ Data scope ใน Service layer</td></tr><tr><td>ทางขยายในอนาคต</td><td>Schema เขียนด้วย SQL มาตรฐาน ถ้าภายหลังต้องการหลาย Server สามารถย้ายไป PostgreSQL ได้โดยแก้ชนิดข้อมูลเล็กน้อย</td></tr></tbody></table></div><h3 id="s-7-1-environments">7.1 Environments</h3><div class="scroll table-wrap"><table><thead><tr><th>Env</th><th>วัตถุประสงค์</th><th>ข้อมูล</th></tr></thead><tbody><tr><td>DEV</td><td>พัฒนา</td><td>Seed / ข้อมูลสมมุติ</td></tr><tr><td>SIT/UAT</td><td>ทดสอบร่วมกับ HR</td><td>ข้อมูลที่ Mask แล้ว (ชื่อ, เงินเดือน)</td></tr><tr><td>PROD</td><td>ใช้งานจริง</td><td>ข้อมูลจริง เข้าถึงได้เฉพาะ Production support ตามสิทธิ์</td></tr></tbody></table></div><h3 id="s-7-2-deployment-on-premise">7.2 Deployment (On-premise)</h3><figure class="diagram"><div class="scroll"><pre class="mermaid">flowchart LR
+  U[Users&lt;br/&gt;Syntec LAN / VPN] --&gt; FW[Firewall]
+  FW --&gt; NGX[Nginx&lt;br/&gt;TLS · static SPA · reverse proxy]
+  subgraph PRIM[Primary app server]
+    NGX --&gt; API[seekpi2-api&lt;br/&gt;systemd service · 1 process]
+    API --&gt; DB[(seekpi2.db&lt;br/&gt;SQLite WAL)]
+    API --&gt; FS[(files/)]
+    LS[Litestream] --&gt; DB
+  end
+  LS --&gt;|replicate every 1 s| NAS[(Backup NAS)]
+  SNAP[Nightly VACUUM INTO&lt;br/&gt;+ files rsync] --&gt; NAS
+  NAS --&gt;|restore on failure| STBY[Standby server&lt;br/&gt;same build, stopped]
+  API -.-&gt; AD[Active Directory]
+  API -.-&gt; SMTP[SMTP relay]</pre></div></figure><div class="scroll table-wrap"><table><thead><tr><th>รายการ</th><th>ข้อกำหนดแนะนำ</th></tr></thead><tbody><tr><td>Primary server</td><td>VM 8 vCPU, 16 GB RAM, SSD 200 GB, Ubuntu 24.04 LTS หรือ Windows Server 2022</td></tr><tr><td>Standby server</td><td>Spec เดียวกัน อยู่คนละ Host หรือคนละห้อง Server</td></tr><tr><td>Backup</td><td>Litestream ส่ง WAL ไป NAS ต่อเนื่อง, Snapshot รายวันเก็บ 35 วัน, Snapshot รายเดือนเก็บ 12 เดือน และทดสอบ Restore ทุกไตรมาส</td></tr><tr><td>Maintenance</td><td><code>PRAGMA optimize</code> ทุกคืน, <code>VACUUM</code> รายเดือน (นอกเวลาทำการ) และ Archive <code>audit_log</code> รายปี</td></tr></tbody></table></div></section><section class="sec"><h2 id="s-8-database-design">8. Database Design</h2><h3 id="s-8-1-หลักการออกแบบ">8.1 หลักการออกแบบ</h3><ul>
+<li>ใช้ <strong>SQLite 3.45+</strong> เป็นไฟล์เดียว <code>seekpi2.db</code> ในโหมด WAL (DDL อยู่ที่ <code>database/schema.sql</code> และตรวจแล้วว่าสร้างได้บน SQLite 3.53)</li>
+<li>ทุก Connection ต้องตั้ง <code>PRAGMA foreign_keys = ON</code>, <code>busy_timeout = 5000</code> และ <code>synchronous = NORMAL</code> (SQLite ไม่จำค่าเหล่านี้ไว้ในไฟล์)</li>
+<li>ประกอบด้วย 58 ตาราง (แบ่ง 9 Domain), View สำหรับรายงาน 2 ตัว, Foreign key 116 ตัว และ Trigger 23 ตัว</li>
+<li>เป้าหมายและผลจริงรายงวดอยู่ใน <code>assignment_item_period</code> (L1–L5, actual, score) สถานะและคะแนนต่อ Structure อยู่ใน <code>assignment_structure</code> และลำดับผู้ประเมิน (ACTION TO) อยู่ใน <code>assessor_chain</code></li>
+<li>ชนิดข้อมูล: วันที่และเวลาเก็บเป็น TEXT แบบ ISO-8601 (UTC), Boolean เป็น INTEGER 0/1, JSON เป็น TEXT ที่ตรวจด้วย <code>json_valid()</code> และ Enum เป็น TEXT + CHECK</li>
+<li><code>audit_log</code> และ <code>assignment_stage_log</code> เป็น Append-only (Trigger ห้าม UPDATE/DELETE) และ Archive <code>audit_log</code> เป็นไฟล์ <code>seekpi-audit-YYYY.db</code> รายปี</li>
+<li>ตาราง <code>job</code> ทำหน้าที่เป็น Queue ของงานเบื้องหลังแทน Redis</li>
+<li>ทุกตาราง Master มี <code>company_id</code> เพื่อรองรับหลายบริษัท (Syntec, บริษัทในเครือ และ Joint Venture)</li>
+<li>ข้อมูลมีผลตามช่วงเวลา (<code>effective_from</code> / <code>effective_to</code>) สำหรับ Organization, Position และ Employee job history</li>
+<li>ข้อมูลธุรกรรม (Assignment, Stage log, Audit) ไม่ลบจริง ส่วน Master data ใช้ <code>is_active</code></li>
+<li>ปรับเกณฑ์ JSON ใน Prototype ให้เป็นตารางปกติ ได้แก่ <code>threshold_band</code>, <code>grade_band</code>, <code>force_rank_quota</code> และ <code>criteria_structure_weight</code></li>
+<li>ใช้ Constraint บังคับ Business rule ในระดับฐานข้อมูล ได้แก่ unique assignment ต่อคนต่อ Form, น้ำหนักรวม 100% ก่อนออกจาก Draft, check ช่วงคะแนน และ generated column <code>new_salary</code> / <code>final_bonus</code></li>
+</ul>
+<h3 id="s-8-2-domain-overview">8.2 Domain overview</h3><figure class="diagram"><div class="scroll"><pre class="mermaid">flowchart LR
+  SEC[1. Security &amp; Access&lt;br/&gt;app_user · role · role_permission · auth_provider]
+  ORG[2. Organization &amp; People&lt;br/&gt;organization · employee · job_level · position]
+  KPI[3. KPI Master&lt;br/&gt;appraisal_item · structure · threshold · grade · force_rank_group]
+  CYC[4. Cycle &amp; Workflow&lt;br/&gt;appraisal_period · appraisal_form · workflow_stage]
+  ASG[5. Assignment &amp; Evaluation&lt;br/&gt;assignment · assignment_item · actual · action_plan]
+  FR[6. Force Ranking&lt;br/&gt;force_rank_run · force_rank_result]
+  CMP[7. Compensation&lt;br/&gt;salary import · employee_salary · compensation_result]
+  FB[8. Feedback]
+  SYS[9. System &amp; Audit&lt;br/&gt;notification · file import · job · attachment · audit_log]
+  SEC --&gt; ORG
+  ORG --&gt; ASG
+  KPI --&gt; CYC --&gt; ASG
+  ASG --&gt; FR --&gt; CMP
+  ORG --&gt; CMP
+  ASG --&gt; FB
+  ASG --&gt; SYS</pre></div></figure><h3 id="s-8-3-erd-security-amp-organization">8.3 ERD: Security &amp; Organization</h3><figure class="diagram"><div class="scroll"><pre class="mermaid">erDiagram
+  COMPANY ||--o{ ROLE : has
+  COMPANY ||--o{ ORGANIZATION : has
+  COMPANY ||--o{ EMPLOYEE : employs
+  ROLE ||--o{ ROLE_PERMISSION : grants
+  APP_PERMISSION ||--o{ ROLE_PERMISSION : "secured by"
+  APP_USER ||--o{ USER_ROLE : has
+  ROLE ||--o{ USER_ROLE : "assigned to"
+  AUTH_PROVIDER ||--o{ APP_USER : authenticates
+  EMPLOYEE |o--o| APP_USER : "logs in as"
+  ORG_LEVEL ||--o{ ORGANIZATION : classifies
+  ORGANIZATION ||--o{ ORGANIZATION : "parent of"
+  ORGANIZATION ||--o{ EMPLOYEE : contains
+  LEVEL_GROUP ||--o{ JOB_LEVEL : groups
+  JOB_LEVEL ||--o{ EMPLOYEE : "graded as"
+  POSITION_GROUP ||--o{ POSITION : groups
+  POSITION ||--o{ EMPLOYEE : holds
+  EMPLOYEE ||--o{ EMPLOYEE : "chief of"
+  EMPLOYEE ||--o{ EMPLOYEE_JOB_HISTORY : history
+  EMPLOYEE ||--o{ EMPLOYEE_SALARY : "paid"
+
+  COMPANY {
+    integer id PK
+    text company_code UK
+    text company_name_th
+    text company_name_en
+  }
+  APP_USER {
+    integer id PK
+    text username UK
+    integer employee_id FK
+    integer auth_provider_id FK
+    text external_subject
+    text password_hash
+  }
+  ROLE {
+    integer id PK
+    integer company_id FK
+    text role_code
+    text data_scope
+  }
+  ROLE_PERMISSION {
+    integer role_id PK,FK
+    text permission_code PK,FK
+    integer can_view
+    integer can_add
+    integer can_edit
+    integer can_delete
+    integer can_approve
+  }
+  ORGANIZATION {
+    integer id PK
+    text org_code UK
+    integer parent_id FK
+    integer org_level_id FK
+    text org_path
+    text cost_center
+    text effective_from
+  }
+  EMPLOYEE {
+    integer id PK
+    text emp_code UK
+    integer organization_id FK
+    integer position_id FK
+    integer job_level_id FK
+    integer chief_employee_id FK
+  }
+  EMPLOYEE_SALARY {
+    integer id PK
+    integer employee_id FK
+    numeric base_salary
+    text effective_from
+  }</pre></div></figure><h3 id="s-8-4-erd-kpi-master-amp-cycle-configuration">8.4 ERD: KPI master &amp; cycle configuration</h3><figure class="diagram"><div class="scroll"><pre class="mermaid">erDiagram
+  APPRAISAL_STRUCTURE ||--o{ APPRAISAL_ITEM : contains
+  APPRAISAL_STRUCTURE ||--o{ RATING_SCALE : "rated by"
+  PERSPECTIVE ||--o{ APPRAISAL_ITEM : categorizes
+  KPI_TYPE ||--o{ APPRAISAL_ITEM : types
+  UOM ||--o{ APPRAISAL_ITEM : measures
+  APPRAISAL_CRITERIA ||--o{ CRITERIA_STRUCTURE_WEIGHT : weights
+  APPRAISAL_STRUCTURE ||--o{ CRITERIA_STRUCTURE_WEIGHT : weighted
+  THRESHOLD_GROUP ||--o{ THRESHOLD_BAND : has
+  GRADE_CRITERIA ||--o{ GRADE_BAND : has
+  FORCE_RANK_GROUP ||--o{ FORCE_RANK_QUOTA : has
+  APPRAISAL_PERIOD ||--o{ APPRAISAL_FORM : runs
+  APPRAISAL_CRITERIA ||--o{ APPRAISAL_FORM : "applied in"
+  THRESHOLD_GROUP ||--o{ APPRAISAL_FORM : "applied in"
+  GRADE_CRITERIA ||--o{ APPRAISAL_FORM : "applied in"
+  FORCE_RANK_GROUP |o--o{ APPRAISAL_FORM : "applied in"
+  WORKFLOW_STAGE ||--o{ WORKFLOW_TRANSITION : "from stage"
+  WORKFLOW_STAGE ||--o{ WORKFLOW_TRANSITION : "to stage"
+
+  APPRAISAL_ITEM {
+    integer id PK
+    text item_code UK
+    text item_name_th
+    integer structure_id FK
+    integer perspective_id FK
+    integer uom_id FK
+    text value_direction
+    text frequency
+    text aggregation
+    text data_source
+  }
+  APPRAISAL_STRUCTURE {
+    integer id PK
+    text structure_name
+    text structure_type
+    numeric max_score
+    integer is_get_zero
+  }
+  THRESHOLD_BAND {
+    integer id PK
+    integer threshold_group_id FK
+    numeric score
+    numeric achievement_from
+    numeric achievement_to
+  }
+  GRADE_BAND {
+    integer id PK
+    integer grade_criteria_id FK
+    text grade
+    numeric score_from
+    numeric score_to
+    numeric salary_raise_pct
+    numeric bonus_months
+  }
+  FORCE_RANK_QUOTA {
+    integer force_rank_group_id PK,FK
+    text grade PK
+    numeric quota_pct
+  }
+  APPRAISAL_FORM {
+    integer id PK
+    integer period_id FK
+    integer criteria_id FK
+    integer threshold_group_id FK
+    integer grade_criteria_id FK
+    integer force_rank_group_id FK
+    text status
+  }
+  WORKFLOW_STAGE {
+    integer id PK
+    text stage_code UK
+    smallint seq_no
+    integer allow_edit_actual
+    integer is_final
+  }</pre></div></figure><h3 id="s-8-5-erd-assignment-evaluation-calibration-amp-compensation">8.5 ERD: Assignment, evaluation, calibration &amp; compensation</h3><figure class="diagram"><div class="scroll"><pre class="mermaid">erDiagram
+  APPRAISAL_FORM ||--o{ ASSIGNMENT : contains
+  EMPLOYEE |o--o{ ASSIGNMENT : "evaluated in"
+  ORGANIZATION ||--o{ ASSIGNMENT : "scorecard of"
+  ASSIGNMENT |o--o{ ASSIGNMENT : "cascades to"
+  ASSIGNMENT ||--o{ ASSIGNMENT_ITEM : lines
+  APPRAISAL_ITEM ||--o{ ASSIGNMENT_ITEM : "used in"
+  ASSIGNMENT_ITEM |o--o{ ASSIGNMENT_ITEM : "deployed to"
+  ASSIGNMENT_ITEM ||--o{ ASSIGNMENT_ITEM_PERIOD : "targets L1-L5 and actual per period"
+  ASSIGNMENT_ITEM ||--o{ ACTION_PLAN : "action plan"
+  ASSIGNMENT ||--o{ ASSIGNMENT_STRUCTURE : "stage and score per structure"
+  WORKFLOW_STAGE ||--o{ ASSIGNMENT_STRUCTURE : "current stage"
+  ASSIGNMENT ||--o{ ASSESSOR_CHAIN : "action to"
+  ASSIGNMENT ||--o{ ASSIGNMENT_STAGE_LOG : history
+  APPRAISAL_FORM ||--o{ FORCE_RANK_RUN : calibrates
+  FORCE_RANK_RUN ||--o{ FORCE_RANK_RESULT : produces
+  ASSIGNMENT ||--o{ FORCE_RANK_RESULT : ranked
+  ASSIGNMENT ||--o| COMPENSATION_RESULT : rewards
+  SALARY_IMPORT_BATCH ||--o{ SALARY_IMPORT_LINE : lines
+  SALARY_IMPORT_LINE |o--o| EMPLOYEE_SALARY : creates
+  EMPLOYEE ||--o{ FEEDBACK : receives
+  APP_USER ||--o{ FEEDBACK : gives
+
+  ASSIGNMENT {
+    integer id PK
+    integer form_id FK
+    text assignment_kind
+    integer employee_id FK
+    integer organization_id FK
+    integer parent_assignment_id FK
+    integer evaluator_employee_id FK
+    numeric base_score
+    numeric deduct_total
+    numeric result_score
+    numeric result_score5
+    text status_summary
+    text system_grade
+    text force_rank_grade
+    text final_grade
+    integer row_version
+  }
+  ASSIGNMENT_ITEM {
+    integer id PK
+    integer assignment_id FK
+    integer item_id FK
+    integer parent_assignment_item_id FK
+    integer is_deployed
+    integer is_adopted
+    numeric weight_pct
+    numeric target_value
+    numeric actual_value
+    numeric score
+    numeric weighted_score
+    numeric max_value
+    numeric unit_deduct_score
+    numeric value_get_zero
+    numeric deduct_score
+  }
+  ASSIGNMENT_ITEM_PERIOD {
+    integer assignment_item_id PK,FK
+    integer period_no PK
+    numeric l1
+    numeric l2
+    numeric l3
+    numeric l4
+    numeric l5
+    numeric actual_value
+    numeric score
+  }
+  ASSIGNMENT_STRUCTURE {
+    integer assignment_id PK,FK
+    integer structure_id PK,FK
+    numeric weight_pct
+    integer stage_id FK
+    numeric score100
+    numeric score5
+  }
+  ASSIGNMENT_STAGE_LOG {
+    integer id PK
+    integer assignment_id FK
+    integer from_stage_id FK
+    integer to_stage_id FK
+    text action_code
+    integer actor_user_id FK
+    text comment
+  }
+  FORCE_RANK_RESULT {
+    integer run_id PK,FK
+    integer assignment_id PK,FK
+    integer rank_no
+    numeric percentile
+    integer is_tie
+    text force_rank_grade
+    text manual_override_grade
+  }
+  COMPENSATION_RESULT {
+    integer id PK
+    integer assignment_id FK,UK
+    text grade_used
+    numeric base_salary
+    numeric raise_amount
+    numeric new_salary
+    numeric bonus_amount
+    numeric final_bonus
+  }</pre></div></figure><h3 id="s-8-6-data-dictionary-ตารางหลัก">8.6 Data dictionary (ตารางหลัก)</h3><div class="scroll table-wrap"><table><thead><tr><th>ตาราง</th><th>คำอธิบาย</th><th>ปริมาณโดยประมาณ / ปี</th></tr></thead><tbody><tr><td><code>employee</code></td><td>ข้อมูลพนักงานปัจจุบัน (Snapshot), ประวัติอยู่ใน <code>employee_job_history</code></td><td>5,000</td></tr><tr><td><code>appraisal_item</code></td><td>Dictionary ของ KPI และ Competency</td><td>500</td></tr><tr><td><code>appraisal_form</code></td><td>รอบการประเมิน (เช่น Annual 2026, Mid-year 2026)</td><td>2–4</td></tr><tr><td><code>assignment</code></td><td>Scorecard: 1 แถวต่อพนักงานหรือหน่วยงานต่อ Form</td><td>10,000</td></tr><tr><td><code>assignment_item</code></td><td>KPI line ใน Scorecard</td><td>150,000</td></tr><tr><td><code>assignment_item_period</code></td><td>เป้า L1–L5 และผลจริงรายงวด (Monthly 12 / Quarterly 4 / Yearly 1)</td><td>1,000,000</td></tr><tr><td><code>assignment_structure</code></td><td>สถานะ Workflow และคะแนนต่อ Structure</td><td>30,000</td></tr><tr><td><code>assignment_stage_log</code></td><td>ประวัติ Workflow</td><td>60,000</td></tr><tr><td><code>force_rank_result</code></td><td>ผลการ Calibrate ต่อ Run</td><td>10,000 ต่อ Run</td></tr><tr><td><code>compensation_result</code></td><td>Merit และ Bonus</td><td>5,000</td></tr><tr><td><code>audit_log</code></td><td>Usage / Audit log (Archive เป็นไฟล์รายปี)</td><td>2–5 ล้าน</td></tr><tr><td><code>job</code></td><td>Queue งานเบื้องหลัง (ลบงานที่เสร็จแล้วเก่ากว่า 30 วัน)</td><td>หมุนเวียน</td></tr></tbody></table></div><h3 id="s-8-7-index-performance-และ-backup">8.7 Index, Performance และ Backup</h3><ul>
+<li>Partial unique index <code>ux_assignment_individual (form_id, employee_id)</code> ป้องกันการมอบหมายซ้ำ</li>
+<li><code>ix_org_path</code> (materialized path) สำหรับ Query ทั้ง Subtree ขององค์กร เช่น Dashboard ระดับ Division</li>
+<li>รายงานขนาดใหญ่ใช้ View <code>v_assignment_summary</code> และ <code>v_kpi_trend</code> และเมื่อข้อมูลโตให้สร้างตารางสรุป (Summary table) ที่ Refresh ตอน Recalculate</li>
+<li>Backup: Litestream replicate WAL ไป NAS ต่อเนื่อง, <code>VACUUM INTO</code> snapshot รายวันเก็บ 35 วัน และทดสอบ Restore ทุกไตรมาส ห้าม Copy ไฟล์ <code>.db</code> ตรง ๆ ขณะระบบทำงาน</li>
+<li>ข้อมูลเงินเดือน (<code>employee_salary</code>, <code>compensation_result</code>) SQLite ไม่มี DB role จึงบังคับสิทธิ์ที่ API (<code>report_bonus_salary</code> / <code>import_salary</code>) และเข้ารหัส Disk ของ Server</li>
+</ul>
+</section><section class="sec"><h2 id="s-9-workflow-diagrams">9. Workflow Diagrams</h2><h3 id="s-9-1-annual-performance-cycle">9.1 Annual performance cycle</h3><figure class="diagram"><div class="scroll"><pre class="mermaid">flowchart TD
+  A[HR: ตั้งค่า Master data&lt;br/&gt;Structure · Threshold · Grade · Force Rank Group] --&gt; B[HR: สร้าง Appraisal Period และ Form]
+  B --&gt; C[Executive: กำหนด Corporate KPI&lt;br/&gt;SPI · CPI · GPM · CSAT · LTIFR]
+  C --&gt; D[Cascade KPI ลง Division / Department]
+  D --&gt; E[Manager: มอบหมาย Individual KPI&lt;br/&gt;Weight · Target]
+  E --&gt; F{น้ำหนักรวมแต่ละ Structure = 100%?}
+  F -- ไม่ใช่ --&gt; E
+  F -- ใช่ --&gt; G[Employee: ยอมรับ KPI]
+  G --&gt; H[Data Owner: บันทึกผลรายเดือน&lt;br/&gt;หน้าจอ หรือ Import Excel/CSV]
+  H --&gt; I[ระบบคำนวณ Achievement · Score · Deduct · Grade อัตโนมัติ]
+  I --&gt; J[Employee: Self-evaluation + Action Plan]
+  J --&gt; K[Manager: ประเมิน Competency และยืนยันผล]
+  K --&gt; L[HR / Committee: Force Rank Calibration]
+  L --&gt; M[Approver: อนุมัติผลสุดท้าย]
+  M --&gt; N[C&amp;B: คำนวณ Merit &amp; Bonus → Export Payroll]
+  N --&gt; O[HR: ปิด Form และ Lock ข้อมูล]</pre></div></figure><h3 id="s-9-2-workflow-ต่อ-structure-ตามระบบเดิม">9.2 Workflow ต่อ Structure (ตามระบบเดิม)</h3><figure class="diagram"><div class="scroll"><pre class="mermaid">stateDiagram-v2
+  [*] --&gt; APPROVE_ITEM : มอบหมาย KPI
+  APPROVE_ITEM --&gt; SAVE_DRAFT_ACTUAL : owner
+  APPROVE_ITEM --&gt; REVIEW_ACTUAL : owner
+  APPROVE_ITEM --&gt; REJECT_ITEM : owner
+  REJECT_ITEM --&gt; APPROVE_ITEM : evaluator
+  SAVE_DRAFT_ACTUAL --&gt; REVIEW_ACTUAL : owner
+  REVIEW_ACTUAL --&gt; APPROVE_ACTUAL : evaluator
+  REVIEW_ACTUAL --&gt; REJECT_ACTUAL : evaluator
+  REJECT_ACTUAL --&gt; REVIEW_ACTUAL : owner
+  APPROVE_ACTUAL --&gt; ADMIN_APPROVE_ACTUAL : admin
+  APPROVE_ACTUAL --&gt; ADMIN_REJECT_ACTUAL : admin
+  APPROVE_ACTUAL --&gt; RE_WORK : evaluator
+  ADMIN_REJECT_ACTUAL --&gt; REVIEW_ACTUAL : owner
+  RE_WORK --&gt; REVIEW_ACTUAL : owner
+  ADMIN_APPROVE_ACTUAL --&gt; END_TO_VERTICAL : admin
+  END_TO_VERTICAL --&gt; END_TO_HORIZONTAL : admin
+  END_TO_HORIZONTAL --&gt; [*]</pre></div></figure><p>Competency มี Workflow แยก: Appraisal → Save Draft / Submit (ผู้ประเมิน) → Approve / Reject (admin) → End to Vertical / End to Horizontal และรายละเอียด Transition ทั้งหมดอยู่ที่ <code>server/workflow.js</code></p>
+<h3 id="s-9-3-data-entry-amp-scoring-sequence">9.3 Data entry &amp; scoring sequence</h3><figure class="diagram"><div class="scroll"><pre class="mermaid">sequenceDiagram
+  actor PM as Project Manager
+  participant FE as Frontend
+  participant API as NestJS API
+  participant DB as SQLite (WAL)
+  participant W as Recalculate worker
+  PM-&gt;&gt;FE: บันทึก SPI งวด Oct = 0.96
+  FE-&gt;&gt;API: PUT /appraisal/{id} {structure_id, actuals:[{item, period_no: 10, 0.96}]}
+  API-&gt;&gt;API: ตรวจสิทธิ์ (owner/evaluator + stage ของ Structure อนุญาตให้กรอกผล)
+  API-&gt;&gt;DB: BEGIN IMMEDIATE · UPDATE assignment_item_period
+  API-&gt;&gt;DB: INSERT job(recalc_assignment) · COMMIT
+  API--&gt;&gt;FE: 200 OK
+  W-&gt;&gt;DB: claim job (UPDATE ... RETURNING)
+  W-&gt;&gt;DB: roll-up actual ตาม aggregation
+  W-&gt;&gt;DB: period score (L1–L5) → KPI score → weight score · deduct
+  W-&gt;&gt;DB: assignment_structure.score100/score5, result_score (100 และ 5), system_grade
+  W-&gt;&gt;DB: INSERT job(send_email) ถ้าคะแนนต่ำกว่าเกณฑ์</pre></div></figure><h3 id="s-9-4-force-rank-calibration">9.4 Force rank calibration</h3><figure class="diagram"><div class="scroll"><pre class="mermaid">flowchart TD
+  S[เลือก Form + Mode&lt;br/&gt;Company / Vertical / Horizontal / Board] --&gt; R[ระบบดึง Assignment ที่มี result_score]
+  R --&gt; G[จัดกลุ่มตาม Mode&lt;br/&gt;บริษัท · หน่วยงาน · Level group]
+  SO[เรียงคะแนนรวม → KPI → Competency → รหัสพนักงาน]
+  G --&gt; SM{กลุ่มน้อยกว่า 5 คน?}
+  SM -- ใช่ --&gt; KEEP[ใช้ System grade ไม่บังคับ]
+  SM -- ไม่ --&gt; SO
+  SO --&gt; QU[คำนวณที่นั่งต่อเกรด&lt;br/&gt;Largest Remainder จาก force_rank_quota]
+  QU --&gt; AS[กำหนด force_rank_grade ตามลำดับ&lt;br/&gt;ติดธง Tie เมื่อคะแนนเท่ากันข้ามเกรด]
+  AS --&gt; RV[Committee ทบทวน: Planned vs Actual, ธง Tie, Board view]
+  RV --&gt; OV{ต้องปรับรายคน?}
+  OV -- ใช่ --&gt; MO[manual_override_grade + เหตุผล]
+  MO --&gt; RV
+  OV -- ไม่ --&gt; AP[Apply run → assignment.force_rank_grade]
+  AP --&gt; LG[บันทึก audit_log และ stage = CALIBRATED]</pre></div></figure><h3 id="s-9-5-login-ด้วย-active-directory">9.5 Login ด้วย Active Directory</h3><figure class="diagram"><div class="scroll"><pre class="mermaid">sequenceDiagram
+  actor U as User
+  participant FE as SPA
+  participant API as API
+  participant AD as Active Directory (LDAPS)
+  participant DB as SQLite
+  U-&gt;&gt;FE: กรอก Username + Password (https://seekpi2.syntec.local)
+  FE-&gt;&gt;API: POST /auth/login
+  API-&gt;&gt;DB: หา app_user และตรวจ locked_until / failed_attempts
+  alt บัญชี AD
+    API-&gt;&gt;AD: LDAPS bind ด้วย user DN + password
+    AD--&gt;&gt;API: สำเร็จ / ไม่สำเร็จ
+  else Local account
+    API-&gt;&gt;API: ตรวจ argon2id hash + Password Policy
+  end
+  API-&gt;&gt;DB: บันทึก audit_log (login) และรีเซ็ตหรือเพิ่ม failed_attempts
+  API--&gt;&gt;FE: JWT 15 นาที + refresh token (httpOnly cookie) + permissions
+  FE-&gt;&gt;FE: สร้างเมนูตาม can_view</pre></div></figure><h3 id="s-9-6-salary-import-amp-compensation">9.6 Salary import &amp; compensation</h3><figure class="diagram"><div class="scroll"><pre class="mermaid">flowchart LR
+  U[C&amp;B อัปโหลด Excel] --&gt; V[Validate&lt;br/&gt;emp_code มีอยู่จริง · ตัวเลข · ซ้ำ]
+  V --&gt;|มี error| E[แสดงรายการ error&lt;br/&gt;salary_import_line.error_message]
+  V --&gt;|ผ่าน| P[Preview + ยืนยัน]
+  P --&gt; A[Apply → employee_salary&lt;br/&gt;effective_from]
+  A --&gt; C[คำนวณ compensation_result&lt;br/&gt;จาก effective grade]
+  C --&gt; AP[อนุมัติ C&amp;B Manager]
+  AP --&gt; X[Export ไฟล์ Excel ให้ทีม Payroll]</pre></div></figure></section><section class="sec"><h2 id="s-10-api-design-rest-api-v1">10. API Design (REST, <code>/api/v1</code>)</h2><div class="scroll table-wrap"><table><thead><tr><th>Resource</th><th>Endpoints หลัก</th></tr></thead><tbody><tr><td>Auth</td><td><code>POST /auth/login</code>, <code>POST /auth/refresh</code>, <code>POST /auth/logout</code>, <code>GET /me</code></td></tr><tr><td>Data import</td><td><code>POST /imports/{employees,organizations,actuals}</code> (Upload → Validate), <code>POST /imports/{id}/apply</code>, <code>GET /imports/{id}</code></td></tr><tr><td>Master data</td><td><code>GET/POST /{resource}</code>, <code>GET/PATCH/DELETE /{resource}/{id}</code> สำหรับ company, organizations, levels, positions, perspectives, items และอื่น ๆ</td></tr><tr><td>Roles</td><td><code>GET/PUT /roles/{id}/permissions</code></td></tr><tr><td>Forms</td><td><code>POST /forms</code>, <code>POST /forms/{id}/open</code>, <code>POST /forms/{id}/close</code></td></tr><tr><td>Assignments</td><td><code>GET /assignments?formId&amp;kind&amp;orgId&amp;stage</code>, <code>POST /assignments:bulk</code>, <code>PATCH /assignments/{id}</code>, <code>POST /assignments/{id}/transitions/{action}</code></td></tr><tr><td>Actuals</td><td><code>PUT /assignment-items/{id}/actuals/{yyyy-mm}</code>, <code>POST /actuals:import</code></td></tr><tr><td>Force rank</td><td><code>POST /force-rank-runs</code>, <code>GET /force-rank-runs/{id}</code>, <code>PATCH /force-rank-runs/{id}/results/{assignmentId}</code>, <code>POST /force-rank-runs/{id}/apply</code></td></tr><tr><td>Compensation</td><td><code>POST /salary-imports</code>, <code>POST /salary-imports/{id}/apply</code>, <code>POST /compensation/{formId}/calculate</code>, <code>POST /compensation/{formId}/approve</code></td></tr><tr><td>Dashboards</td><td><code>GET /dashboards/overall</code>, <code>/branch</code>, <code>/comparison</code>, <code>/trend</code></td></tr><tr><td>Reports</td><td><code>GET /reports/{code}?formId&amp;orgId</code>, <code>POST /reports/{code}/export</code> (สร้าง Job แล้วดาวน์โหลดไฟล์จาก File store)</td></tr><tr><td>Feedback</td><td><code>GET/POST /feedback</code>, <code>GET /feedback/report</code></td></tr><tr><td>Audit</td><td><code>GET /audit-logs</code></td></tr></tbody></table></div><p>มาตรฐานของทุก Endpoint: pagination แบบ <code>?page&amp;pageSize</code> (สูงสุด 200), error format ตาม RFC 9457 (Problem Details), ส่ง <code>If-Match</code> / <code>row_version</code> สำหรับ update และ Rate limit 300 req/นาที/ผู้ใช้</p>
+</section><section class="sec"><h2 id="s-11-migration-จาก-seekpi-เดิม">11. Migration จาก SEEKPI เดิม</h2><div class="scroll table-wrap"><table><thead><tr><th>ขั้น</th><th>งาน</th></tr></thead><tbody><tr><td>1</td><td>Export Master data จากระบบเดิม (Company, Org, Level, Position, Item, Criteria) ผ่าน API เดิมหรือ DB dump ซึ่งต้องได้รับอนุญาตจากเจ้าของระบบ</td></tr><tr><td>2</td><td>Mapping: <code>level</code> เดิมแยกเป็น <code>org_level</code> + <code>job_level</code>, JSON/เกณฑ์เดิมแปลงเป็น <code>threshold_band</code> / <code>grade_band</code></td></tr><tr><td>3</td><td>นำเข้าประวัติผลประเมิน 3 ปีล่าสุดเป็น Form ที่สถานะ <code>closed</code> (read-only) เพื่อให้ Trend Dashboard ต่อเนื่อง</td></tr><tr><td>4</td><td>Parallel run 1 รอบ (เช่น Mid-year) เทียบผลคะแนนกับระบบเดิม ยอมรับความต่างได้ ≤ 0.01 คะแนน</td></tr><tr><td>5</td><td>Cut-over, Redirect URL เดิม <code>/seekpi</code> ไป <code>/seekpi-2</code> และ Freeze ระบบเดิมเป็น Read-only 1 ปี</td></tr></tbody></table></div></section><section class="sec"><h2 id="s-12-delivery-roadmap">12. Delivery Roadmap</h2><div class="scroll table-wrap"><table><thead><tr><th>Phase</th><th>ระยะเวลา</th><th>Deliverable</th></tr></thead><tbody><tr><td>0 Discovery</td><td>2 สัปดาห์</td><td>ยืนยันสูตรคำนวณกับ HR (หัวข้อ 11 ของ Scoring Method), เก็บหน้าจอระบบเดิมหลัง Login (REA signed-in capture), เตรียม Server on-prem, UAT plan</td></tr><tr><td>1 Foundation</td><td>4 สัปดาห์</td><td>Login AD/Local, RBAC, Master data, Import พนักงานและองค์กรจาก Excel, Backup (Litestream)</td></tr><tr><td>2 Core appraisal</td><td>6 สัปดาห์</td><td>Form, Assignment, Cascade, Data entry, Scoring, Workflow</td></tr><tr><td>3 Calibration &amp; Compensation</td><td>4 สัปดาห์</td><td>Force Rank 4 โหมด, Salary import, Merit/Bonus</td></tr><tr><td>4 Insight</td><td>3 สัปดาห์</td><td>Dashboard 4 หน้า, รายงาน 9 ฉบับ, Export</td></tr><tr><td>5 Hardening &amp; Go-live</td><td>3 สัปดาห์</td><td>Performance test, Security test (ZAP / Pentest), Data migration, Training</td></tr></tbody></table></div></section><section class="sec"><h2 id="s-13-ข้อสมมุติและประเด็นที่ต้องยืนยัน">13. ข้อสมมุติและประเด็นที่ต้องยืนยัน</h2><ol>
+<li>สูตร Deduct (BR-06) ยืนยันได้จากโค้ดหน้าจอของ SEEKPI เดิม ส่วนการปัดเศษ Force Rank, ความหมายของ Value Get Zero และตัวตัดสินเมื่อคะแนนเท่ากัน ต้องให้ HR ยืนยันตามหัวข้อ 11 ของ <code>SEEKPI-2_Scoring_Method.md</code></li>
+<li>ศึกษาหน้าจอระบบเดิมหลัง Login แบบอ่านอย่างเดียวแล้ว (<code>rea-analysis/SEEKPI_Original_Feature_Catalogue.md</code>) เหลือ 7 เมนูที่บัญชีที่ใช้ศึกษาไม่มีสิทธิ์ (Force Rank Company, Branch Performance, Data Entry Status, Setting ทั้ง 4 และ Adjust) และเนื้อหารายงานที่สร้างที่ Server ซึ่งต้องทวนใน Phase 0</li>
+<li><strong>ตัดสินแล้ว:</strong> ติดตั้ง On-premise, ใช้ SQLite และไม่เชื่อมต่อ D365 (ข้อมูลพนักงานและผล KPI นำเข้าด้วย Excel/CSV)</li>
+<li>ต้องเตรียม Server 2 เครื่อง (Primary + Standby), NAS สำหรับ Backup, บัญชี Service สำหรับ LDAPS และ SMTP relay จากทีม IT Infrastructure</li>
+</ol>
+</section></main>
+</div>
