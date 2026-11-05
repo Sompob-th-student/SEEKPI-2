@@ -17,7 +17,7 @@
     {
       "binding": "DB",
       "database_name": "seekpi2",
-      "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID",
+      "database_id": "12c7dfdc-bff1-4657-b818-3be033dd49df",
       "migrations_dir": "migrations"
     }
   ],
